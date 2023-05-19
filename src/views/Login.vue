@@ -3,8 +3,8 @@
     <v-card-title>Login</v-card-title>
     <v-card-text>
       <v-text-field 
-        v-model="username"
-        label="Username" 
+        v-model="email"
+        label="Email" 
         prepend-icon="mdi-account-circle"
       />
       <v-text-field 
@@ -24,7 +24,6 @@
 </template>
 
 <script>
-
 import { useUserStore } from '@/stores/user-store'
 
 const userStore = useUserStore()
@@ -34,14 +33,11 @@ export default {
   data() {
     return {
       showPassword: false,
-      username: '',
+      email: '',
       password: ''
     }
   },
   methods: {
-    goto(path){
-      this.$router.push(path)
-    },
     async handleSubmit() {
       try {
         const response = await fetch('http://localhost:3001/api/v1/auth/login', {
@@ -50,7 +46,7 @@ export default {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            email: this.username,
+            email: this.email,
             password: this.password
           })
         })
@@ -58,7 +54,6 @@ export default {
         if (response.ok) {
           const data = await response.json()
           userStore.setUserDetails(data)
-          //await userStore.fetchUser()
           this.$router.push('/home')
         } else {
           // Handle error response from the server

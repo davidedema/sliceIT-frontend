@@ -16,7 +16,6 @@ export const useUserStore = defineStore('User', {
   },
   actions: {
     async setUserDetails(data) {
-      //console.log('setUserDetails', data)
       this.$state.id = data.user.id;
       this.$state.token = data.token;
       this.$state.email = data.user.email;

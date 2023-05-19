@@ -12,6 +12,7 @@
         @click:append="showPassword =! showPassword"
       />
       <v-text-field 
+        v-model="confirmPassword"
         label="Ripeti password" 
         :type="showPassword ? 'text' : 'password'" 
         prepend-icon="mdi-lock-check"
@@ -45,6 +46,10 @@ export default {
   methods: {
     async handleRegister() {
       try {
+        if (this.password !== this.confirmPassword) {
+          console.error('Le password non coincidono')
+          return;
+        }
         const response = await fetch('http://localhost:3001/api/v1/auth/register', {
           method: 'POST',
           headers: {

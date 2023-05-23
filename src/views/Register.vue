@@ -7,6 +7,7 @@
         v-model="password"
         label="Password" 
         :type="showPassword ? 'text' : 'password'" 
+        :rules="[rules.required, rules.min, rules.specialChar, rules.number, rules.uppercase]"
         prepend-icon="mdi-lock"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="showPassword =! showPassword"
@@ -15,6 +16,7 @@
         v-model="confirmPassword"
         label="Ripeti password" 
         :type="showPassword ? 'text' : 'password'" 
+        :rules="[rules.required]"
         prepend-icon="mdi-lock-check"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="showPassword =! showPassword"
@@ -40,7 +42,14 @@ export default {
       password: '',
       firstName: '',
       lastName: '',
-      nickname: ''
+      nickname: '',
+      rules:{
+        required: value => !!value || 'Required.',
+        min: v => v.length >= 8 || 'Min 8 characters',
+        specialChar: v => /[!@#$%^&*(),.?":{}|<>]/.test(v) || 'At least one special character (!@#$%^&*(),.?":{}|<>)',
+        number: v => /\d/.test(v) || 'At least one number',
+        uppercase: v => /[A-Z]/.test(v) || 'At least one uppercase letter'
+      }
     }
   },
   methods: {

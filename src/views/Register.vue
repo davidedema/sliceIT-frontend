@@ -2,9 +2,16 @@
   <v-card width="500" class="mx-auto mt-10">
     <v-card-title>SignUp</v-card-title>
     <v-card-text>
-      <v-text-field v-model="email" label="Email" prepend-icon="mdi-account-circle"/>
+      <v-text-field 
+        v-model="email" 
+        ref="email"
+        label="Email" 
+        prepend-icon="mdi-account-circle"
+        :rules="[rules.required, rules.emailFormat]"
+      />
       <v-text-field 
         v-model="password"
+        ref="password"
         label="Password" 
         :type="showPassword ? 'text' : 'password'" 
         :rules="[rules.required, rules.min, rules.specialChar, rules.number, rules.uppercase]"
@@ -14,6 +21,7 @@
       />
       <v-text-field 
         v-model="confirmPassword"
+        ref="confirmPassword"
         label="Ripeti password" 
         :type="showPassword ? 'text' : 'password'" 
         :rules="[rules.required]"
@@ -21,13 +29,31 @@
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="showPassword =! showPassword"
       />
-      <v-text-field v-model="firstName" label="Nome" prepend-icon="mdi-alphabet-latin"/>
-      <v-text-field v-model="lastName" label="Cognome" prepend-icon="mdi-alphabet-latin"/>
-      <v-text-field v-model="nickname" label="Nickname" prepend-icon="mdi-account"/>
+      <v-text-field 
+        v-model="firstName" 
+        ref="firstName"
+        label="Nome" 
+        prepend-icon="mdi-alphabet-latin"
+        :rules="[rules.lettersOnly]"
+      />
+      <v-text-field 
+        v-model="lastName" 
+        ref="lastName"
+        label="Cognome" 
+        prepend-icon="mdi-alphabet-latin"
+        :rules="[rules.lettersOnly]"
+      />
+      <v-text-field 
+        v-model="nickname" 
+        ref="nickname"
+        label="Nickname" 
+        prepend-icon="mdi-account"
+        :rules="[rules.required, rules.lettersOnly]" 
+      />
     </v-card-text>
     <v-divider></v-divider>
     <v-card-actions>
-      <v-btn color="success" @click="handleRegister()">Register</v-btn>
+      <v-btn color="success" @click="handleRegister()"> Register </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -40,15 +66,26 @@ export default {
       showPassword: false,
       email: '',
       password: '',
+      confirmPassword: '',
       firstName: '',
       lastName: '',
       nickname: '',
       rules:{
-        required: value => !!value || 'Required.',
+        required: v => !!v || 'Required.',
         min: v => v.length >= 8 || 'Min 8 characters',
         specialChar: v => /[!@#$%^&*(),.?":{}|<>]/.test(v) || 'At least one special character (!@#$%^&*(),.?":{}|<>)',
         number: v => /\d/.test(v) || 'At least one number',
-        uppercase: v => /[A-Z]/.test(v) || 'At least one uppercase letter'
+        uppercase: v => /[A-Z]/.test(v) || 'At least one uppercase letter',
+        lettersOnly: v => {
+        if (!v) {
+          return true; 
+        }
+        return /^[a-zA-Z]+$/.test(v) || 'Only letters are allowed.';
+      },
+        emailFormat: v => {
+          const emailRegex = /\S+@\S+\.\S+/;
+          return emailRegex.test(v) || 'Invalid email format.';
+        }
       }
     }
   },

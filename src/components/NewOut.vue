@@ -146,11 +146,23 @@ export default {
         },
         submitForm(){
             // trasformo i nickname in id
-            for(let i = 0; i < this.selected.length; i++){
-                if(this.partecipanti[i].nickname == this.selected[i].user){
-                    this.selected[i].user = this.partecipanti[i].id
+            if (this.selected.length > 0) {
+                for (let i = 0; i < this.selected.length; i++) {
+                    for (let j = 0; j < this.partecipanti.length; j++) {
+                        if (this.selected[i].user == this.partecipanti[j].nickname) {
+                            this.selected[i].user = this.partecipanti[j].id
+                        }
+                    }
                 }
             }
+
+            // paidby to id
+            for (let i = 0; i < this.partecipanti.length; i++) {
+                if (this.pagataDa == this.partecipanti[i].nickname) {
+                    this.pagataDa = this.partecipanti[i].id
+                }
+            }   
+
             // dati da inviare
             const data = {
                 name: this.nome,
@@ -159,7 +171,7 @@ export default {
                 paidBy: this.pagataDa,
                 users: this.selected,
                 group: userStore.currentGroup,
-                periodic: {
+                periodicity: {
                     isPeriodic: this.isPeriodic,
                     days: this.periodo,
                 },

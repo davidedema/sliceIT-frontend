@@ -1,5 +1,3 @@
-
-
 <template>
   <v-app-bar flat color="blue">
     <v-app-bar-title>

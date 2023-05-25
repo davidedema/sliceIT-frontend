@@ -87,6 +87,11 @@
 
 import { useUserStore } from '@/stores/user-store'
 const userStore = useUserStore()
+const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
+const API_URL = HOST + '/api/v1'
+const NEW_OUT_URL = API_URL + '/outgoings'
+const GET_USER_URL = API_URL + '/users/'
+const GET_GROUP_URL = API_URL + '/groups/'
 
 export default {
     data: () => ({
@@ -112,7 +117,7 @@ export default {
         async fetchUsers() {
             userStore.currentGroup = "645a61e383d06be08c4252b7"
             try {
-                const response = await fetch('http://localhost:3001/api/v1/groups/' + userStore.currentGroup + '/', {
+                const response = await fetch(GET_GROUP_URL + userStore.currentGroup + '/', {
                     method: 'GET',
                     headers: {
                         'x-auth-token': userStore.token,
@@ -128,7 +133,7 @@ export default {
                     })
                     for (let i = 0; i < data.members.length; i++) {
 
-                        let response = await fetch('http://localhost:3001/api/v1/users/' + this.partecipanti[i].id + '/', {
+                        let response = await fetch(GET_USER_URL + this.partecipanti[i].id + '/', {
                             method: 'GET',
                             headers: {
                                 'x-auth-token': userStore.token,
@@ -178,7 +183,7 @@ export default {
                 tag: null,
             }
             try {                
-                const response = fetch('http://localhost:3001/api/v1/outgoings/', {
+                const response = fetch(NEW_OUT_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

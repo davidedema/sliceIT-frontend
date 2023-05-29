@@ -12,6 +12,7 @@ export const useUserStore = defineStore('User', {
         lastName: null,
         profilePicture: null,
         groups: null,
+        currentGroup: null,
      }
   },
   actions: {
@@ -25,6 +26,7 @@ export const useUserStore = defineStore('User', {
       this.$state.lastName = data.user.lastName;
       this.$state.profilePicture = data.user.profilePicture;
       this.$state.groups = data.user.groups;
+      this.$state.currentGroup = data.user.currentGroup;
       console.log('setUserDetails', this.$state)
     },
     async fetchUser() {

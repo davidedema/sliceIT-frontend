@@ -8,7 +8,7 @@
       <v-container>
         <v-col cols="12" sm="12" md="12">
           <v-card 
-          @click="goto('/Group')"
+          @click="goto('/groups/' + group._id )"
           v-for="group in this.groups" 
           style="margin-bottom:4px ;" 
 

@@ -59,6 +59,11 @@
 </template>
 
 <script>
+
+const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
+const API_URL = HOST + '/api/v1'
+const REGISTER_URL = API_URL + '/auth/login'
+
 export default {
   name: 'RegisterView',
   data() {
@@ -96,7 +101,7 @@ export default {
           console.error('Le password non coincidono')
           return;
         }
-        const response = await fetch('http://localhost:3001/api/v1/auth/register', {
+        const response = await fetch(REGISTER_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

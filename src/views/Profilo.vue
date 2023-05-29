@@ -106,12 +106,11 @@
 <script>
 
 import { useUserStore } from '@/stores/user-store'
-import { json } from 'stream/consumers'
 
 const userStore = useUserStore()
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
 const API_URL = HOST + '/api/v1'
-const EDIT_URL = API_URL + '/user/' + userStore.id
+const EDIT_URL = API_URL + '/users/' + userStore.id
 
 export default {
     data() {
@@ -147,8 +146,8 @@ export default {
     },
     methods: {
         async editUser() {
-
-            try {
+            console.log(EDIT_URL)
+            /* try {
                 const response = await fetch(EDIT_URL, {
                     method: 'PUT',
                     headers: {
@@ -166,7 +165,7 @@ export default {
 
             } catch (error) {
                 console.log("Errore:" + error)
-            }
+            } */
         }
     }
 }

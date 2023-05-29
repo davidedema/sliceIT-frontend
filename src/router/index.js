@@ -65,6 +65,7 @@ const routes = [
         component: () => HomePage,
       },
     ],
+  },
   {
     path: '/profile',
     component: () => DefaultUser,

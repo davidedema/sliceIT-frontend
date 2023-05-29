@@ -5,7 +5,7 @@
       SliceIT
     </v-app-bar-title>
 
-    <v-btn rounded="">
+    <v-btn rounded="" @click="goto('/profile')">
       {{ nomeVisualizzato }}
       <v-icon>mdi-account</v-icon>
     </v-btn>

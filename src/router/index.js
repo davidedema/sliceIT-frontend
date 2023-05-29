@@ -7,6 +7,7 @@ const LoginPage = import('@/views/Login.vue')
 const RegisterPage = import('@/views/Register.vue')
 const HelpPage = import('@/views/Help.vue')
 const HomePage = import('@/views/Home.vue')
+const ProfilePage = import('@/views/Profilo.vue')
 
 const routes = [
   {
@@ -63,7 +64,18 @@ const routes = [
         component: () => HomePage,
       },
     ],
-  }
+  },
+  {
+    path: '/profile',
+    component: () => DefaultUser,
+    children: [
+      {
+        path: '',
+        name: 'profile',
+        component: () => ProfilePage,
+      },
+    ],
+  },
 ]
 
 const router = createRouter({

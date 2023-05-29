@@ -7,6 +7,8 @@ const LoginPage = import('@/views/Login.vue')
 const RegisterPage = import('@/views/Register.vue')
 const HelpPage = import('@/views/Help.vue')
 const HomePage = import('@/views/Home.vue')
+const GroupsPage = import('@/views/Groups.vue')
+const GroupPage = import('@/views/Group.vue')
 
 const routes = [
   {
@@ -63,7 +65,29 @@ const routes = [
         component: () => HomePage,
       },
     ],
-  }
+  },
+  {
+    path: '/groups',
+    component: () => DefaultUser,
+    children: [
+      {
+        path: '',
+        name: 'GroupsPage',
+        component: () => GroupsPage,
+      },
+    ],
+  },
+  {
+    path: '/groups/:id',
+    component: () => DefaultUser,
+    children: [
+      {
+        path: '',
+        name: 'GroupPage',
+        component: () => GroupPage,
+      },
+    ],
+  },
 ]
 
 const router = createRouter({

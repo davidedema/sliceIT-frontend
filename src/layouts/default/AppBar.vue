@@ -6,8 +6,8 @@
       SliceIT
     </v-app-bar-title>
     
-    <v-btn text rounded @click="goto('/login')">SignIn</v-btn>
-    <v-btn text rounded @click="goto('/register')">SignUp</v-btn>
+    <v-btn text rounded @click="goto('/login')">Sign In</v-btn>
+    <v-btn text rounded @click="goto('/register')">Sign Up</v-btn>
     <v-btn text rounded @click="goto('/help')">Help</v-btn>
   </v-app-bar>
 </template>

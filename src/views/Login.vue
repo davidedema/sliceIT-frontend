@@ -28,6 +28,9 @@
 import { useUserStore } from '@/stores/user-store'
 
 const userStore = useUserStore()
+const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
+const API_URL = HOST + '/api/v1'
+const LOGIN_URL = API_URL + '/auth/login'
 
 export default {
   name: 'LoginView',
@@ -44,7 +47,7 @@ export default {
     },
     async handleSubmit() {
       try {
-        const response = await fetch('http://localhost:3001/api/v1/auth/login', {
+        const response = await fetch(LOGIN_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

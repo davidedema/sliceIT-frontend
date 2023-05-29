@@ -4,9 +4,9 @@
       <!-- <v-icon icon="mdi-circle-slice-4" />  -->
       SliceIT
     </v-app-bar-title>
-    
-    <v-btn rounded="">
-      Mario Rossi
+
+    <v-btn rounded="" @click="goto('/profile')">
+      {{ nomeVisualizzato }}
       <v-icon>mdi-account</v-icon>
     </v-btn>
 
@@ -14,11 +14,21 @@
 </template>
 
 <script>
-  export default {
-    methods: {
-      goto(path){
-        this.$router.push(path)
+
+import { useUserStore } from '@/stores/user-store'
+const userStore = useUserStore()
+
+export default {
+
+  data() {
+    return {
+      nomeVisualizzato: userStore.nickname
       }
+  },
+  methods: {
+    goto(path) {
+      this.$router.push(path)
     }
   }
+}
 </script>

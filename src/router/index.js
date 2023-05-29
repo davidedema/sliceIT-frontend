@@ -7,6 +7,7 @@ const LoginPage = import('@/views/Login.vue')
 const RegisterPage = import('@/views/Register.vue')
 const HelpPage = import('@/views/Help.vue')
 const HomePage = import('@/views/Home.vue')
+const ProfilePage = import('@/views/Profilo.vue')
 const GroupsPage = import('@/views/Groups.vue')
 const GroupPage = import('@/views/Group.vue')
 
@@ -65,7 +66,18 @@ const routes = [
         component: () => HomePage,
       },
     ],
+  {
+    path: '/profile',
+    component: () => DefaultUser,
+    children: [
+      {
+        path: '',
+        name: 'profile',
+        component: () => ProfilePage,
+      },
+    ],
   },
+]
   {
     path: '/groups',
     component: () => DefaultUser,

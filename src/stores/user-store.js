@@ -1,6 +1,11 @@
 
 import { defineStore } from 'pinia'
 
+
+const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
+const API_URL = HOST + '/api/v1'
+const USERS_URL = API_URL + '/users'
+
 export const useUserStore = defineStore('User', {
   state: () => {
     return {
@@ -17,7 +22,6 @@ export const useUserStore = defineStore('User', {
   },
   actions: {
     async setUserDetails(data) {
-      //console.log('setUserDetails', data)
       this.$state.id = data.user._id;
       this.$state.token = data.token;
       this.$state.email = data.user.email;
@@ -26,16 +30,22 @@ export const useUserStore = defineStore('User', {
       this.$state.lastName = data.user.lastName;
       this.$state.profilePicture = data.user.profilePicture;
       this.$state.groups = data.user.groups;
-      this.$state.currentGroup = data.user.currentGroup;
       console.log('setUserDetails', this.$state)
     },
     async fetchUser() {
-      const response = await fetch('http://localhost:3001/api/v1/users/' + this.$state.id)
+      const response = await fetch(USERS_URL+ '/' + this.$state.id,{
+        method: 'GET',
+        headers: {
+          'x-auth-token': this.$state.token,
+        },
+      })
       const data = await response.json()
 
-      this.$state.id = data.user.id
-      this.$state.firstName = data.user.first_name
-      this.$state.lastName = data.user.last_name
+      this.$state.id = data._id
+      this.$state.firstName = data.firstName
+      this.$state.lastName = data.lastName
+      this.$state.email = data.email
+      this.$state.nickname = data.nickname
     },
     clearUser() {
       this.$state.id = null

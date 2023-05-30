@@ -1,4 +1,5 @@
 <template>
+    Benvenuto nella home
     <NewOut />
 </template>
   

@@ -8,7 +8,7 @@
       <v-container>
         <v-col cols="12" sm="12" md="12">
           <v-card 
-          @click="goto('/groups/' + group._id )"
+          @click="goto('/groups/' + group._id ), selectGroup(group._id)"
           v-for="group in this.groups" 
           style="margin-bottom:4px ;" 
 
@@ -19,7 +19,7 @@
                   class="flex-grow-1" 
                   color="#6096B4"
                   size="80"
-                  style="margin-left: 10px;"
+                  style="margin-right: 10px;"
                 >
                   <v-img
                     :src= "urlImg + group.name"
@@ -31,9 +31,9 @@
                   > </v-img>
                 </v-avatar>
               </v-col>
-              <v-col cols="auto" sm="auto" md="auto">
+              <v-col cols="auto" sm="2" md="auto">
                 
-                <h2 style="padding-left: 10px;">
+                <h2 style="margin-left: 10px;  ">
                   {{ group.name }}
                 </h2>
               </v-col>
@@ -59,7 +59,7 @@
                 height="40px"
                 width="40px"
                 >
-                  <v-btn color="primary">
+                  <v-btn @click="goto()" color="primary">
                     <v-img
                       src="https://img.icons8.com/ios/50/ffffff/plus.png"
                       height="40px"
@@ -95,7 +95,6 @@
 /**
  * TODO: sistemare errori
  *  - se token è null dire che è non null
- *  - se refershi perdi il token
  *  - auth controllo token da riguardare e id da capire e riguardare
  */
   import { useUserStore } from '@/stores/user-store'
@@ -119,6 +118,9 @@
       goto(path){ 
         this.$router.push(path)
       },
+      selectGroup(groupId) {
+        userStore.setCurrentGroup(groupId);
+      },
       async getGroups() {
         try {
           
@@ -133,9 +135,7 @@
           if (response.ok) {
             const data = await response.json()
             this.groups = data;
-            console.log(data);
-            console.log(this.groups.members);
-            console.log("name: " + this.groups.name);
+            console.log(data);           
           } else {
             // Handle error response from the server
             const errorData = await response.json()
@@ -145,29 +145,6 @@
           console.error('error:', error)
         }
       },
-      /*async getGroup() {
-        try {
-          //console.log("token: " + userStore.token);
-          console.log("id: " + this.groups.id);
-          const response = await fetch('http://localhost:3001/api/v1/groups/' + this.groups.id, { 
-            method: 'GET',
-            headers: {
-              'x-auth-token': userStore.token,
-            },
-          });
-          if (response.ok) {
-            const data = await response.json()
-            this.group = data;
-            console.log(data);
-          } else {
-            // Handle error response from the server
-            const errorData = await response.json()
-            console.error('response failed:', errorData.message)
-          }
-        } catch (error) {
-          console.error('error:', error)
-        }
-      }*/
-    },
+    },    
   }    
 </script>

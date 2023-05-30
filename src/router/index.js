@@ -66,6 +66,7 @@ const routes = [
         component: () => HomePage,
       },
     ],
+  },
   {
     path: '/profile',
     component: () => DefaultUser,
@@ -77,7 +78,6 @@ const routes = [
       },
     ],
   },
-]
   {
     path: '/groups',
     component: () => DefaultUser,

@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
     <h1>Sommario</h1>
     <v-card width="1200" class="mx-auto mt-10">
         <v-table class="text-center">
@@ -71,6 +72,9 @@
             </tbody>
         </v-table>
     </v-card>
+=======
+    Benvenuto nella home
+>>>>>>> main
 </template>
 
 <script>

@@ -8,7 +8,6 @@ const RegisterPage = import('@/views/Register.vue')
 const HelpPage = import('@/views/Help.vue')
 const HomePage = import('@/views/Home.vue')
 const ProfilePage = import('@/views/Profilo.vue')
-const NewOut = import('@/views/NewOut.vue')
 
 const routes = [
   {

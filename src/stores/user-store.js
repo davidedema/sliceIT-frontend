@@ -1,6 +1,11 @@
 
 import { defineStore } from 'pinia'
 
+
+const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
+const API_URL = HOST + '/api/v1'
+const USERS_URL = API_URL + '/users'
+
 export const useUserStore = defineStore('User', {
   state: () => {
     return {
@@ -12,12 +17,13 @@ export const useUserStore = defineStore('User', {
         lastName: null,
         profilePicture: null,
         groups: null,
+        currentGroup: null,
      }
   },
   actions: {
     async setUserDetails(data) {
-      //console.log('setUserDetails', data)
       this.$state.id = data.user._id;
+      this.$state.id = data.user.id;
       this.$state.token = data.token;
       this.$state.email = data.user.email;
       this.$state.nickname = data.user.nickname;
@@ -25,10 +31,10 @@ export const useUserStore = defineStore('User', {
       this.$state.lastName = data.user.lastName;
       this.$state.profilePicture = data.user.profilePicture;
       this.$state.groups = data.user.groups;
-      console.log('setUserDetails', this.$state)
+      this.$state.currentGroup = data.user.currentGroup;
     },
     async fetchUser() {
-      const response = await fetch('http://localhost:3001/api/v1/users/' + this.$state.id)
+      const response = await fetch(USERS_URL+ '/' + this.$state.id)
       const data = await response.json()
 
       this.$state.id = data.user.id

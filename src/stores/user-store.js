@@ -23,7 +23,6 @@ export const useUserStore = defineStore('User', {
   actions: {
     async setUserDetails(data) {
       this.$state.id = data.user._id;
-      this.$state.id = data.user.id;
       this.$state.token = data.token;
       this.$state.email = data.user.email;
       this.$state.nickname = data.user.nickname;
@@ -34,12 +33,19 @@ export const useUserStore = defineStore('User', {
       this.$state.currentGroup = data.user.currentGroup;
     },
     async fetchUser() {
-      const response = await fetch(USERS_URL+ '/' + this.$state.id)
+      const response = await fetch(USERS_URL+ '/' + this.$state.id,{
+        method: 'GET',
+        headers: {
+          'x-auth-token': this.$state.token,
+        },
+      })
       const data = await response.json()
 
-      this.$state.id = data.user.id
-      this.$state.firstName = data.user.first_name
-      this.$state.lastName = data.user.last_name
+      this.$state.id = data._id
+      this.$state.firstName = data.firstName
+      this.$state.lastName = data.lastName
+      this.$state.email = data.email
+      this.$state.nickname = data.nickname
     },
     clearUser() {
       this.$state.id = null

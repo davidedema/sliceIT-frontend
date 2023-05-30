@@ -71,9 +71,11 @@
                                             <v-text-field label="Nickname" v-model="newNickname"></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="12" md="12">
-                                            <v-text-field label="Password" type="password"
+                                            <v-text-field label="Password"
                                                 :rules="[rules.min, rules.specialChar, rules.number, rules.uppercase]"
-                                                v-model="newPassword"></v-text-field>
+                                                v-model="newPassword" :type="showPassword1 ? 'text' : 'password'"
+                                                :append-icon="showPassword1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                                @click:append="showPassword1 = !showPassword1" />
                                         </v-col>
                                         <v-col cols="12">
                                             <v-text-field label="Nome" :rules="[rules.lettersOnly]"
@@ -91,7 +93,32 @@
                                 <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
                                     Chiudi
                                 </v-btn>
-                                <v-btn color="blue-darken-1" variant="text" @click="editUser">
+                                <v-btn color="blue-darken-1" variant="text" @click="dialogConfirm = true">
+                                    Salva
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+
+                    <v-dialog v-model="dialogConfirm" width="auto">
+                        <v-card>
+                            <v-container>
+                                <v-card-title>
+                                    Inserire la password corrente per confermare le modifiche
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-text-field label="Password Corrente" v-model="password"
+                                        :type="showPassword1 ? 'text' : 'password'"
+                                        :append-icon="showPassword1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                        @click:append="showPassword1 = !showPassword1" />
+                                </v-card-text>
+                            </v-container>
+                            <v-spacer></v-spacer>
+                            <v-card-actions>
+                                <v-btn @click="dialogConfirm = false" color="secondary">
+                                    Esci
+                                </v-btn>
+                                <v-btn @click="editUser" color="primary">
                                     Salva
                                 </v-btn>
                             </v-card-actions>
@@ -113,22 +140,28 @@ const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
 const API_URL = HOST + '/api/v1'
 const id = userStore.id
 const EDIT_URL = API_URL + '/users/' + userStore.id
+const LOGIN_URL = API_URL + '/auth/login'
 
 export default {
     data() {
         return {
             dialog: false,
+            dialogConfirm: false,
             name: userStore.firstName,
             surname: userStore.lastName,
             nickname: userStore.nickname,
+            showPassword: false,
+            showPassword1: false,
             email: userStore.email,
+            auth: '',
             newName: '',
             newSurname: '',
             newNickname: '',
             newEmail: '',
             newPassword: '',
+            password: '',
             rules: {
-                required: v => !!v || 'Required.',
+                required: v => !!v || 'Required',
                 min: v => v.length >= 8 || 'Min 8 characters',
                 specialChar: v => /[!@#$%^&*(),.?":{}|<>]/.test(v) || 'At least one special character (!@#$%^&*(),.?":{}|<>)',
                 number: v => /\d/.test(v) || 'At least one number',
@@ -137,41 +170,59 @@ export default {
                     if (!v) {
                         return true;
                     }
-                    return /^[a-zA-Z]+$/.test(v) || 'Only letters are allowed.';
+                    return /^[a-zA-Z]+$/.test(v) || 'Only letters are allowed';
                 },
                 emailFormat: v => {
                     const emailRegex = /\S+@\S+\.\S+/;
-                    return emailRegex.test(v) || 'Invalid email format.';
+                    return emailRegex.test(v) || 'Invalid email format';
                 }
             }
         }
     },
     methods: {
         async editUser() {
-            console.log(id)
             try {
-                const response = await fetch(EDIT_URL, {
-                    method: 'PUT',
+                const response = await fetch(LOGIN_URL, {
+                    method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
                         'x-auth-token': userStore.token,
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        firstName: this.newName !== '' ? this.newName : undefined,
-                        lastName: this.newSurname !== '' ? this.newSurname : undefined,
-                        nickname: this.newNickname !== '' ? this.newNickname : undefined,
-                        email: this.newEmail !== '' ? this.newEmail : undefined,
-                        password: this.newPassword !== '' ? this.newPassword : undefined,
+                        email: userStore.email,
+                        password: this.password,
                     })
                 })
                 if (response.status === 200) {
-                    this.dialog = false
-                    userStore.fetchUser()
+                    this.dialogConfirm = false,
+                    this.auth = 200
                 }
-
-            } catch (error) {
+            } catch {
                 console.log("Errore:" + error)
             }
+            if (this.auth == 200)
+                try {
+                    const response = await fetch(EDIT_URL, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-auth-token': userStore.token,
+                        },
+                        body: JSON.stringify({
+                            firstName: this.newName !== '' ? this.newName : undefined,
+                            lastName: this.newSurname !== '' ? this.newSurname : undefined,
+                            nickname: this.newNickname !== '' ? this.newNickname : undefined,
+                            email: this.newEmail !== '' ? this.newEmail : undefined,
+                            password: this.newPassword !== '' ? this.newPassword : undefined,
+                        })
+                    })
+                    if (response.status === 200) {
+                        this.dialog = false
+                        userStore.fetchUser()
+                    }
+                } catch (error) {
+                    console.log("Errore:" + error)
+                }
         }
     }
 }

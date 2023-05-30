@@ -108,8 +108,10 @@
 import { useUserStore } from '@/stores/user-store'
 
 const userStore = useUserStore()
+userStore.fetchUser()
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
 const API_URL = HOST + '/api/v1'
+const id = userStore.id
 const EDIT_URL = API_URL + '/users/' + userStore.id
 
 export default {
@@ -146,8 +148,8 @@ export default {
     },
     methods: {
         async editUser() {
-            console.log(EDIT_URL)
-            /* try {
+            console.log(id)
+            try {
                 const response = await fetch(EDIT_URL, {
                     method: 'PUT',
                     headers: {
@@ -162,10 +164,14 @@ export default {
                         password: this.newPassword !== '' ? this.newPassword : undefined,
                     })
                 })
+                if (response.status === 200) {
+                    this.dialog = false
+                    userStore.fetchUser()
+                }
 
             } catch (error) {
                 console.log("Errore:" + error)
-            } */
+            }
         }
     }
 }

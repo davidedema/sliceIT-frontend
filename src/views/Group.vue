@@ -1,6 +1,29 @@
 <template>
     <header>
-        <h1>{{ this.group.name }}</h1>
+      <v-row no-gutters class="d-flex align-center">
+        <v-col cols="1">
+        <v-avatar 
+          class="flex-grow-1" 
+          color=primary
+          size="80"
+          style="margin-right: 10px;"
+        >
+          <v-img
+            :src= "urlImg + group.name"
+            height="80px"
+            :aspect-ratio="1"
+            cover
+            position="left"                    
+            class="text-white"
+          > </v-img>
+        </v-avatar>
+        </v-col>
+        <v-col cols="auto" sm="2" md="auto">
+          <h1 style="margin-left: 10px;  ">
+            {{ group.name }}
+          </h1>
+        </v-col>
+      </v-row>
     </header>
 
     <!--MEMBRI DEL GRUPPO-->
@@ -18,10 +41,10 @@
     <!--SPESE DEL GRUPPO-->
     <main>
       <v-card 
-          v-for="n in this.group.outgoings" :key="n"
-          style="margin-bottom:10px;"
+          v-for="outgoing in this.outgoing" :key="outgoing"
+          style="margin-top:10px;"
         >
-        spesa: {{ this.outgoing[n] }}
+        spesa: {{ outgoing.name }}
         </v-card>
     </main>
 
@@ -44,6 +67,7 @@ export default {
       group:"",
       outgoing:"",
       users:"",
+      urlImg: "https://robohash.org/",
     }
   },
   methods: {

@@ -1,7 +1,8 @@
 <template>
     <header>
-      <h1>Gruppi</h1>
-      
+      <h1>
+        Gruppi
+      </h1>      
     </header>
 
     <main>      
@@ -10,14 +11,14 @@
           <v-card 
           @click="goto('/groups/' + group._id ), selectGroup(group._id)"
           v-for="group in this.groups" 
-          style="margin-bottom:4px ;" 
+          style="margin-bottom:6px ;" 
 
           >
             <v-row no-gutters class="d-flex align-center">
               <v-col cols="1">
                 <v-avatar 
                   class="flex-grow-1" 
-                  color="#6096B4"
+                  color="#primary"
                   size="80"
                   style="margin-right: 10px;"
                 >
@@ -42,7 +43,7 @@
                   <v-avatar 
                   v-for="n in group.members.length" :key="n"
                   class="flex-grow-1" 
-                  color="#6096B4"
+                  color="#primary"
                   size="60"
                   style="margin-right: 15px;"
                   >

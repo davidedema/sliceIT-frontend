@@ -1,10 +1,10 @@
 <template>
     <header>
-      <v-row no-gutters class="d-flex align-center">
+      <v-row no-gutters class="d-flex align-center" style="padding:6px">
         <v-col cols="1">
         <v-avatar 
           class="flex-grow-1" 
-          color=primary
+          color="secondary"
           size="80"
           style="margin-right: 10px;"
         >
@@ -26,39 +26,98 @@
       </v-row>
     </header>
 
-    <!--MEMBRI DEL GRUPPO-->
-    <!--<aside style="position: fixed; top: 0; right: 0; width: 300px; height: 100%; background-color: #f0f0f0;">
-
-        <v-card 
-            v-for="members in this.group.members" :key="n"
-            position="right"
-            style="margin-bottom:10px;"
-          >
-          {{this.group.members}}
-        </v-card>
-      </aside>-->
-    
-    <!--SPESE DEL GRUPPO-->
     <main>
-      <v-card 
-          v-for="outgoing in this.outgoing" :key="outgoing"
-          style="margin-top:10px;"
-        >
-        spesa: {{ outgoing.name }}
-        </v-card>
+      <v-row>
+        <v-col cols="7">        
+          <!--SPESE DEL GRUPPO-->
+            <v-row no-gutters class="d-flex align-center" style="padding:6px"> 
+              <h2> 
+                Spese
+              </h2>
+            </v-row> 
+            <!--CONTENITORE DELLE SPESE-->
+            <v-col cols="12" sm="12" md="12"> 
+              <div v-for="(spesa,index) in this.outgoing" :key="spesa">
+                <!--<div v-if="spesa.createdAt.substring(0, 7)!=spesa.createdAt.substring(0, 7)">
+                  <v-card  color="primary">
+
+                  </v-card>
+                </div>    -->
+                <v-card style="margin-top:6px; padding: 4px;">
+                  <v-row no-gutters class="d-flex align-center">
+                  
+                    <!--DATA SPESE-->
+                    <v-col cols="1">  
+                      <h4 style="text-align: center;">
+                         {{ convData(spesa.createdAt) }} 
+                         <br> 
+                         {{ spesa.createdAt.substring(8,10) }}
+                      </h4>
+                      <!--<v-img :src= "urlImg + 1234" height="60px" :aspect-ratio="1" cover position="left" class="text-white"> </v-img>-->
+                    </v-col>
+
+                    <!--NOME SPESE-->
+                    <v-col cols="3">  
+                      <h2>
+                        {{ spesa.name }}
+                      </h2>
+                    </v-col> 
+
+                    <!--PAGANTE SPESA-->
+                    <v-col cols="3">
+                      <h4 style="text-align: left;">Pagata da: 
+                        <br> 
+                        {{ getPaidBy(spesa.paidBy) }}
+                      </h4>
+                    </v-col>
+
+                    <!--IMPORTO SPESA-->                    
+                    <v-col cols="2">  
+                      <h4 style="text-align: left;">
+                        Importo: 
+                        <br> 
+                        {{ spesa.value }}€
+                      </h4>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </div>
+            </v-col>
+        </v-col>
+      <!--MEMBRI DEL GRUPPO-->
+        <v-col cols="5">
+            <v-row no-gutters class="d-flex align-center" style="padding:6px"> 
+              <h2> 
+                Membri
+              </h2>
+            </v-row> 
+            <v-row no-gutters class="d-flex flex-wrap-none" >
+              <v-col cols="12" sm="12" md="12"> 
+                <div v-for="member in this.group.members" :key="n" >
+                  <v-card style="margin-top:6px; padding: 4px; margin-right:6px;"              
+                  >
+                    {{getPaidBy(member)}}
+                  </v-card>
+                </div>
+              </v-col>
+            </v-row>
+        </v-col>
+      </v-row>
     </main>
 
 </template>
 
 <script>    
-
 import { useUserStore } from '@/stores/user-store'
 const userStore = useUserStore()
+const month = {
+}
 
 export default {
   mounted() {
     this.getGroup();
     this.getGroupOutgoings();
+    this.getGroupUsers();
   },
 
   name: 'getGroups',
@@ -66,17 +125,77 @@ export default {
     return {
       group:"",
       outgoing:"",
-      users:"",
+      members:"",
       urlImg: "https://robohash.org/",
     }
   },
   methods: {
+    goto(path){ 
+      this.$router.push(path)
+    },
     currentGroup() {
       this.group=userStore.getCurrentGroup;
     },
-    
-    goto(path){ 
-      this.$router.push(path)
+    /*async getAllPaidBy() {
+      for (let i = 0; i < this.outgoing.length; i++) {
+        this.users.push(this.getUser(this.outgoing[i].paidBy));
+        console.log(this.users[i]);
+      }
+    },*/
+    getPaidBy(userId){
+      for (let i = 0; i < this.members.length; i++) {
+        console.log(this.members[i]._id)
+        if (this.members[i]._id == userId) {
+          return this.members[i].nickname
+        }
+      }
+    },
+    convData(d){
+      let _data = d.substring(5,7)
+      //console.log(_data)
+      switch(_data)
+      {
+        case "01":
+          _data = "GEN"
+          break;
+        case "02":
+          _data = "FEB"
+          break;
+        case "03":
+          _data = "MAR"
+          break;
+        case "04":
+          _data = "APR"
+          break;
+        case "05":
+          _data = "MAG"
+          break;
+        case "06":
+          _data = "GIU"
+          break;
+        case "07":
+          _data = "LUG"
+          break;
+        case "08":
+          _data = "AGO"
+          break;
+        case "09":
+          _data = "SET"
+          break;
+        case "10":
+          _data = "OTT"
+          break;
+        case "11":
+          _data = "NOV"
+          break;
+        case "12":
+          _data = "DIC"
+          break;
+        default:
+          _data = "!valid Format"
+      }
+      console.log(_data)
+      return _data
     },
     async getGroup() {
       try {
@@ -92,7 +211,7 @@ export default {
         if (response.ok) {
           const data = await response.json()
           this.group = data;
-          console.log(data);
+          //console.log(data);
         } else {
           // Handle error response from the server
           const errorData = await response.json()
@@ -116,7 +235,8 @@ export default {
         if (response.ok) {
           const data = await response.json()
           this.outgoing = data;
-          console.log(data);
+          //console.log(data);
+          //this.getAllPaidBy();
         } else {
           // Handle error response from the server
           const errorData = await response.json()
@@ -125,7 +245,28 @@ export default {
       } catch (error) {
         console.error('error:', error)
       }
-  },
+    },
+    async getGroupUsers() {
+      try {
+        const response = await fetch("http://localhost:3001/api/v1/groups/" + userStore.currentGroup + "/users", { 
+          method: 'GET',
+          headers: {
+            'x-auth-token': userStore.token,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json()
+          this.members = data;
+          console.log(data);
+        } else {
+          // Handle error response from the serv
+          const errorData = await response.json()
+          console.error('response failed:', errorData.message)
+        }
+      } catch (error) {
+        console.error('error:', error)
+      }
+    },
   }
 } 
 </script>

@@ -1,24 +1,24 @@
 <template>
     <header>
       <h1>
-        Gruppi
+        <v-row no-gutters class="d-flex align-center" style="padding:6px"> 
+          Gruppi
+        </v-row>
       </h1>      
     </header>
 
     <main>      
-      <v-container>
         <v-col cols="12" sm="12" md="12">
           <v-card 
           @click="goto('/groups/' + group._id ), selectGroup(group._id)"
           v-for="group in this.groups" 
-          style="margin-bottom:6px ;" 
-
+          style="margin-bottom:6px ; padding: 6px; height: 100%;  width: 100%;" 
           >
             <v-row no-gutters class="d-flex align-center">
               <v-col cols="1">
                 <v-avatar 
                   class="flex-grow-1" 
-                  color="#primary"
+                  color="secondary"
                   size="80"
                   style="margin-right: 10px;"
                 >
@@ -43,7 +43,7 @@
                   <v-avatar 
                   v-for="n in group.members.length" :key="n"
                   class="flex-grow-1" 
-                  color="#primary"
+                  color="#secondary"
                   size="60"
                   style="margin-right: 15px;"
                   >
@@ -73,7 +73,6 @@
             </v-row>
           </v-card>
         </v-col>
-      </v-container>
 
       <div style="
         float: right;

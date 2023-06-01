@@ -28,61 +28,61 @@
 
     <main>
       <v-row>
+        <!--SPESE DEL GRUPPO-->
         <v-col cols="7">        
-          <!--SPESE DEL GRUPPO-->
-            <v-row no-gutters class="d-flex align-center" style="padding:6px"> 
-              <h2> 
-                Spese
-              </h2>
-            </v-row> 
-            <!--CONTENITORE DELLE SPESE-->
-            <v-col cols="12" sm="12" md="12"> 
-              <div v-for="(spesa,index) in this.outgoing" :key="spesa">
-                <!--<div v-if="spesa.createdAt.substring(0, 7)!=spesa.createdAt.substring(0, 7)">
-                  <v-card  color="primary">
+          <v-row no-gutters class="d-flex align-center" style="padding:6px"> 
+            <h2> 
+              Spese
+            </h2>
+          </v-row> 
+          <!--CONTENITORE DELLE SPESE-->
+          <v-col cols="12" sm="12" md="12">
+            <div v-for="(spesa,index) in this.outgoing" :key="spesa">
+              <!--<div v-if="spesa.createdAt.substring(0, 7)!=spesa.createdAt.substring(0, 7)">
+                <v-card  color="primary">
 
-                  </v-card>
-                </div>    -->
-                <v-card style="margin-top:6px; padding: 4px;">
-                  <v-row no-gutters class="d-flex align-center">
-                  
-                    <!--DATA SPESE-->
-                    <v-col cols="1">  
-                      <h4 style="text-align: center;">
-                         {{ convData(spesa.createdAt) }} 
-                         <br> 
-                         {{ spesa.createdAt.substring(8,10) }}
-                      </h4>
-                      <!--<v-img :src= "urlImg + 1234" height="60px" :aspect-ratio="1" cover position="left" class="text-white"> </v-img>-->
-                    </v-col>
-
-                    <!--NOME SPESE-->
-                    <v-col cols="3">  
-                      <h2>
-                        {{ spesa.name }}
-                      </h2>
-                    </v-col> 
-
-                    <!--PAGANTE SPESA-->
-                    <v-col cols="3">
-                      <h4 style="text-align: left;">Pagata da: 
-                        <br> 
-                        {{ getPaidBy(spesa.paidBy) }}
-                      </h4>
-                    </v-col>
-
-                    <!--IMPORTO SPESA-->                    
-                    <v-col cols="2">  
-                      <h4 style="text-align: left;">
-                        Importo: 
-                        <br> 
-                        {{ spesa.value }}€
-                      </h4>
-                    </v-col>
-                  </v-row>
                 </v-card>
-              </div>
-            </v-col>
+              </div>    -->
+              <v-card style="margin-top:6px; padding: 4px;">
+                <v-row no-gutters class="d-flex align-center">
+                
+                  <!--DATA SPESE-->
+                  <v-col cols="1">
+                    <h4 style="text-align: center;">
+                        {{ convData(spesa.createdAt) }} 
+                        <br> 
+                        {{ spesa.createdAt.substring(8,10) }}
+                    </h4>
+                    <!--<v-img :src= "urlImg + 1234" height="60px" :aspect-ratio="1" cover position="left" class="text-white"> </v-img>-->
+                  </v-col>
+
+                  <!--NOME SPESE-->
+                  <v-col cols="3">  
+                    <h2>
+                      {{ spesa.name }}
+                    </h2>
+                  </v-col> 
+
+                  <!--PAGANTE SPESA-->
+                  <v-col cols="3">
+                    <h4 style="text-align: left;">Pagata da: 
+                      <br> 
+                      {{ getPaidBy(spesa.paidBy) }}
+                    </h4>
+                  </v-col>
+
+                  <!--IMPORTO SPESA-->                    
+                  <v-col cols="2">  
+                    <h4 style="text-align: left;">
+                      Importo: 
+                      <br> 
+                      {{ spesa.value }}€
+                    </h4>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </div>
+          </v-col>
         </v-col>
       <!--MEMBRI DEL GRUPPO-->
         <v-col cols="5">
@@ -91,7 +91,7 @@
                 Membri
               </h2>
             </v-row> 
-            <v-row no-gutters class="d-flex flex-wrap-none" >
+            
               <v-col cols="12" sm="12" md="12"> 
                 <div v-for="member in this.group.members" :key="n" >
                   <v-card style="margin-top:6px; padding: 4px; margin-right:6px;"              
@@ -100,7 +100,7 @@
                   </v-card>
                 </div>
               </v-col>
-            </v-row>
+            
         </v-col>
       </v-row>
     </main>

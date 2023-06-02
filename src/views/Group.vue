@@ -1,117 +1,128 @@
 <template>
-    <header>
-      <v-row no-gutters class="d-flex align-center" style="padding:6px">
-        <v-col cols="1">
-        <v-avatar 
-          class="flex-grow-1" 
+  <header>
+    <v-row no-gutters class="d-flex align-center" style="padding: 6px">
+      <v-col cols="1">
+        <v-avatar
+          class="flex-grow-1"
           color="secondary"
           size="80"
-          style="margin-right: 10px;"
+          style="margin-right: 10px"
         >
           <v-img
-            :src= "urlImg + group.name"
+            :src="urlImg + group.name"
             height="80px"
             :aspect-ratio="1"
             cover
-            position="left"                    
+            position="left"
             class="text-white"
-          > </v-img>
+          >
+          </v-img>
         </v-avatar>
-        </v-col>
-        <v-col cols="auto" sm="2" md="auto">
-          <h1 style="margin-left: 10px;  ">
-            {{ group.name }}
-          </h1>
-        </v-col>
-      </v-row>
-    </header>
+      </v-col>
+      <v-col cols="auto" sm="2" md="auto">
+        <h1 style="margin-left: 10px">
+          {{ group.name }}
+        </h1>
+      </v-col>
+    </v-row>
+  </header>
 
-    <main>
-      <v-row>
-        <!--SPESE DEL GRUPPO-->
-        <v-col cols="7">        
-          <v-row no-gutters class="d-flex align-center" style="padding:6px"> 
-            <h2> 
-              Spese
-            </h2>
-          </v-row> 
-          <!--CONTENITORE DELLE SPESE-->
-          <v-col cols="12" sm="12" md="12">
-            <div v-for="(spesa,index) in this.outgoing" :key="spesa">
-              <!--<div v-if="spesa.createdAt.substring(0, 7)!=spesa.createdAt.substring(0, 7)">
+  <main>
+    <v-row>
+      <!--SPESE DEL GRUPPO-->
+      <v-col cols="7">
+        <v-row no-gutters class="d-flex align-center" style="padding: 6px">
+          <h2>Spese</h2>
+        </v-row>
+        <!--CONTENITORE DELLE SPESE-->
+        <v-col cols="12" sm="12" md="12">
+          <div v-for="spesa in this.outgoing" :key="spesa">
+            <!--<div v-if="spesa.createdAt.substring(0, 7)!=spesa.createdAt.substring(0, 7)">
                 <v-card  color="primary">
 
                 </v-card>
               </div>    -->
-              <v-card style="margin-top:6px; padding: 4px;">
-                <v-row no-gutters class="d-flex align-center">
-                
-                  <!--DATA SPESE-->
-                  <v-col cols="1">
-                    <h4 style="text-align: center;">
-                        {{ convData(spesa.createdAt) }} 
-                        <br> 
-                        {{ spesa.createdAt.substring(8,10) }}
-                    </h4>
-                    <!--<v-img :src= "urlImg + 1234" height="60px" :aspect-ratio="1" cover position="left" class="text-white"> </v-img>-->
-                  </v-col>
+            <v-card style="margin-top: 6px; padding: 4px">
+              <v-row no-gutters class="d-flex align-center">
+                <!--DATA SPESE-->
+                <v-col cols="1">
+                  <h4 style="text-align: center">
+                    {{ convData(spesa.createdAt) }}
+                    <br />
+                    {{ spesa.createdAt.substring(8, 10) }}
+                  </h4>
+                </v-col>
 
-                  <!--NOME SPESE-->
-                  <v-col cols="3">  
-                    <h2>
-                      {{ spesa.name }}
-                    </h2>
-                  </v-col> 
+                <!--NOME SPESE-->
+                <v-col cols="3">
+                  <h2>
+                    {{ spesa.name }}
+                  </h2>
+                </v-col>
 
-                  <!--PAGANTE SPESA-->
-                  <v-col cols="3">
-                    <h4 style="text-align: left;">Pagata da: 
-                      <br> 
-                      {{ getPaidBy(spesa.paidBy) }}
-                    </h4>
-                  </v-col>
+                <!--PAGANTE SPESA-->
+                <v-col cols="3">
+                  <h4 style="text-align: left">
+                    Pagata da:
+                    <br />
+                    {{ getPaidBy(spesa.paidBy) }}
+                  </h4>
+                </v-col>
 
-                  <!--IMPORTO SPESA-->                    
-                  <v-col cols="2">  
-                    <h4 style="text-align: left;">
-                      Importo: 
-                      <br> 
-                      {{ spesa.value }}€
+                <!--IMPORTO SPESA-->
+                <v-col cols="2">
+                  <h4 style="text-align: left">
+                    Importo:
+                    <br />
+                    {{ spesa.value }}€
+                  </h4>
+                </v-col>
+                <!--DEBITO SPESA-->
+                <v-col cols="2">
+                  <div v-if="spesa.paidBy != currentUser">
+                    <!--se l'utente non è il pagante-->
+                    <h4 style="text-align: left">
+                      Devi:
+                      <br />
+                      {{ getDebits(spesa) }}€
                     </h4>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </div>
-          </v-col>
+                  </div>
+                  <div v-else>
+                    <!--se l'utente è il pagante-->
+                    <h4 style="text-align: left">
+                      Devi ricevere:
+                      <br />
+                      {{ spesa.value - getCredits(spesa) }}€
+                    </h4>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card>
+          </div>
         </v-col>
+      </v-col>
       <!--MEMBRI DEL GRUPPO-->
-        <v-col cols="5">
-            <v-row no-gutters class="d-flex align-center" style="padding:6px"> 
-              <h2> 
-                Membri
-              </h2>
-            </v-row> 
-            
-              <v-col cols="12" sm="12" md="12"> 
-                <div v-for="member in this.group.members" :key="n" >
-                  <v-card style="margin-top:6px; padding: 4px; margin-right:6px;"              
-                  >
-                    {{getPaidBy(member)}}
-                  </v-card>
-                </div>
-              </v-col>
-            
-        </v-col>
-      </v-row>
-    </main>
+      <v-col cols="5">
+        <v-row no-gutters class="d-flex align-center" style="padding: 6px">
+          <h2>Membri</h2>
+        </v-row>
 
+        <v-col cols="12" sm="12" md="12">
+          <div v-for="member in this.group.members" :key="n">
+            <v-card style="margin-top: 6px; padding: 4px; margin-right: 6px">
+              {{ getPaidBy(member) }}
+            </v-card>
+          </div>
+        </v-col>
+      </v-col>
+    </v-row>
+  </main>
 </template>
 
-<script>    
-import { useUserStore } from '@/stores/user-store'
-const userStore = useUserStore()
-const month = {
-}
+<script>
+import { useUserStore } from "@/stores/user-store";
+const userStore = useUserStore();
+const urlGroup = "http://localhost:3001/api/v1/groups/";
 
 export default {
   mounted() {
@@ -120,153 +131,162 @@ export default {
     this.getGroupUsers();
   },
 
-  name: 'getGroups',
+  name: "getGroups",
   data() {
     return {
-      group:"",
-      outgoing:"",
-      members:"",
+      group: "",
+      outgoing: "",
+      members: "",
       urlImg: "https://robohash.org/",
-    }
+      currentUser: userStore.id,
+    };
   },
   methods: {
-    goto(path){ 
-      this.$router.push(path)
+    goto(path) {
+      this.$router.push(path);
     },
     currentGroup() {
-      this.group=userStore.getCurrentGroup;
+      this.group = userStore.getCurrentGroup;
     },
-    /*async getAllPaidBy() {
-      for (let i = 0; i < this.outgoing.length; i++) {
-        this.users.push(this.getUser(this.outgoing[i].paidBy));
-        console.log(this.users[i]);
-      }
-    },*/
-    getPaidBy(userId){
+    getPaidBy(userId) {
       for (let i = 0; i < this.members.length; i++) {
-        console.log(this.members[i]._id)
+        console.log(this.members[i]._id);
         if (this.members[i]._id == userId) {
-          return this.members[i].nickname
+          return this.members[i].nickname;
         }
       }
     },
-    convData(d){
-      let _data = d.substring(5,7)
+    convData(d) {
+      let _data = d.substring(5, 7);
       //console.log(_data)
-      switch(_data)
-      {
+      switch (_data) {
         case "01":
-          _data = "GEN"
+          _data = "GEN";
           break;
         case "02":
-          _data = "FEB"
+          _data = "FEB";
           break;
         case "03":
-          _data = "MAR"
+          _data = "MAR";
           break;
         case "04":
-          _data = "APR"
+          _data = "APR";
           break;
         case "05":
-          _data = "MAG"
+          _data = "MAG";
           break;
         case "06":
-          _data = "GIU"
+          _data = "GIU";
           break;
         case "07":
-          _data = "LUG"
+          _data = "LUG";
           break;
         case "08":
-          _data = "AGO"
+          _data = "AGO";
           break;
         case "09":
-          _data = "SET"
+          _data = "SET";
           break;
         case "10":
-          _data = "OTT"
+          _data = "OTT";
           break;
         case "11":
-          _data = "NOV"
+          _data = "NOV";
           break;
         case "12":
-          _data = "DIC"
+          _data = "DIC";
           break;
         default:
-          _data = "!valid Format"
+          _data = "!valid Format";
       }
-      console.log(_data)
-      return _data
+      console.log(_data);
+      return _data;
+    },
+    getCredits(spesa) {
+      let credits = 0;
+      for (let i = 0; i < spesa.length; i++) {
+        if (spesa.paidBy != userStore.id) {
+          credits += this.spesa.users[i].value;
+        }
+      }
+      return credits;
+    },
+    getDebits(spesa) {
+      for (let i = 0; i < spesa.users.length; i++) {
+        console.log(spesa.users[i].value);
+        if (spesa.users[i].user == userStore.id) {
+          return spesa.users[i].value;
+        }
+      }
     },
     async getGroup() {
       try {
-        //console.log("token: " + userStore.token);
-        //console.log("id: " + this.groups.id);
         console.log("currentGroup: " + userStore.currentGroup);
-        const response = await fetch("http://localhost:3001/api/v1/groups/" + userStore.currentGroup, { 
-          method: 'GET',
+        const response = await fetch(urlGroup + userStore.currentGroup, {
+          method: "GET",
           headers: {
-            'x-auth-token': userStore.token,
+            "x-auth-token": userStore.token,
           },
         });
         if (response.ok) {
-          const data = await response.json()
+          const data = await response.json();
           this.group = data;
-          //console.log(data);
         } else {
           // Handle error response from the server
-          const errorData = await response.json()
-          console.error('response failed:', errorData.message)
+          const errorData = await response.json();
+          console.error("response failed:", errorData.message);
         }
       } catch (error) {
-        console.error('error:', error)
+        console.error("error:", error);
       }
     },
     async getGroupOutgoings() {
       try {
-        //console.log("token: " + userStore.token);
-        //console.log("id: " + this.groups.id);
-        //console.log("currentGroup: " + userStore.currentGroup);
-        const response = await fetch("http://localhost:3001/api/v1/groups/" + userStore.currentGroup +"/outgoings", { 
-          method: 'GET',
-          headers: {
-            'x-auth-token': userStore.token,
-          },
-        });
+        const response = await fetch(
+          urlGroup + userStore.currentGroup + "/outgoings",
+          {
+            method: "GET",
+            headers: {
+              "x-auth-token": userStore.token,
+            },
+          }
+        );
         if (response.ok) {
-          const data = await response.json()
+          const data = await response.json();
           this.outgoing = data;
-          //console.log(data);
-          //this.getAllPaidBy();
         } else {
           // Handle error response from the server
-          const errorData = await response.json()
-          console.error('response failed:', errorData.message)
+          const errorData = await response.json();
+          console.error("response failed:", errorData.message);
         }
       } catch (error) {
-        console.error('error:', error)
+        console.error("error:", error);
       }
     },
     async getGroupUsers() {
       try {
-        const response = await fetch("http://localhost:3001/api/v1/groups/" + userStore.currentGroup + "/users", { 
-          method: 'GET',
-          headers: {
-            'x-auth-token': userStore.token,
-          },
-        });
+        const response = await fetch(
+          urlGroup + userStore.currentGroup + "/users",
+          {
+            method: "GET",
+            headers: {
+              "x-auth-token": userStore.token,
+            },
+          }
+        );
         if (response.ok) {
-          const data = await response.json()
+          const data = await response.json();
           this.members = data;
           console.log(data);
         } else {
           // Handle error response from the serv
-          const errorData = await response.json()
-          console.error('response failed:', errorData.message)
+          const errorData = await response.json();
+          console.error("response failed:", errorData.message);
         }
       } catch (error) {
-        console.error('error:', error)
+        console.error("error:", error);
       }
     },
-  }
-} 
+  },
+};
 </script>

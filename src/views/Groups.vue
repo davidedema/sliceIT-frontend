@@ -32,8 +32,7 @@
                   > </v-img>
                 </v-avatar>
               </v-col>
-              <v-col cols="auto" sm="2" md="auto">
-                
+              <v-col cols="auto" sm="2" md="auto">             
                 <h2 style="margin-left: 10px;  ">
                   {{ group.name }}
                 </h2>
@@ -42,7 +41,7 @@
                 <v-col cols="auto">
                   <v-avatar 
                   v-for="n in group.members.length" :key="n"
-                  class="flex-grow-1" 
+                  class="flex-grow-1"
                   color="#secondary"
                   size="60"
                   style="margin-right: 15px;"
@@ -62,7 +61,7 @@
                 >
                   <v-btn @click="goto()" color="primary">
                     <v-img
-                      src="https://img.icons8.com/ios/50/ffffff/plus.png"
+                      :src="più"
                       height="40px"
                       width="40px"
                       class="mr-2"
@@ -92,14 +91,10 @@
 </template>
 
 <script>
-/**
- * TODO: sistemare errori
- *  - se token è null dire che è non null
- *  - auth controllo token da riguardare e id da capire e riguardare
- */
   import { useUserStore } from '@/stores/user-store'
 
   const userStore = useUserStore()
+  const urlUser = 'http://localhost:3001/api/v1/users/'
 
   export default {
     mounted() {
@@ -112,6 +107,7 @@
       return {
         groups: [],
         urlImg: "https://robohash.org/",
+        più: "https://img.icons8.com/ios/50/ffffff/plus.png",
       }
     },
     methods: {
@@ -125,7 +121,7 @@
         try {
           
           console.log("id: " + userStore.id);
-          const response = await fetch('http://localhost:3001/api/v1/users/' + userStore.id + '/groups', { 
+          const response = await fetch( urlUser + userStore.id + '/groups', { 
             method: 'GET',
             headers: {
               'x-auth-token': userStore.token,

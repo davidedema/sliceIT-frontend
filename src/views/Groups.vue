@@ -95,6 +95,8 @@
 import { useUserStore } from "@/stores/user-store";
 
 const userStore = useUserStore();
+const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
+const API_URL = HOST + '/api/v1'
 const USERS_URL = API_URL + '/users/' + userStore.id
 
 export default {

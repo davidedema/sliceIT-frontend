@@ -118,6 +118,7 @@
 import { useUserStore } from "@/stores/user-store";
 const userStore = useUserStore();
 userStore.fetchUser()
+const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
 const API_URL = HOST + '/api/v1'
 const GROUPS_URL = API_URL + '/groups/' + userStore.currentGroup
 

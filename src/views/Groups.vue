@@ -123,7 +123,7 @@ export default {
     async getGroups() {
       try {
         console.log("id: " + userStore.id);
-        const response = await fetch(USERS_URL + userStore.id + "/groups", {
+        const response = await fetch(USERS_URL + "/groups", {
           method: "GET",
           headers: {
             "x-auth-token": userStore.token,

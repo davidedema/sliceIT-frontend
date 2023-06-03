@@ -74,7 +74,18 @@ const routes = [
       {
         path: '',
         name: 'groups',
-        component: () => ProfilePage,
+        component: () => GroupsPage,
+      },
+    ],
+  },
+  {
+    path: '/group',
+    component: () => DefaultUser,
+    children: [
+      {
+        path: '',
+        name: 'group',
+        component: () => GroupPage,
       },
     ],
   },
@@ -108,28 +119,6 @@ const routes = [
         path: '',
         name: 'profile',
         component: () => ProfilePage,
-      },
-    ],
-  },
-  {
-    path: '/groups',
-    component: () => DefaultUser,
-    children: [
-      {
-        path: '',
-        name: 'GroupsPage',
-        component: () => GroupsPage,
-      },
-    ],
-  },
-  {
-    path: '/groups/:id',
-    component: () => DefaultUser,
-    children: [
-      {
-        path: '',
-        name: 'GroupPage',
-        component: () => GroupPage,
       },
     ],
   },

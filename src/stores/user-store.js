@@ -1,8 +1,5 @@
 import { defineStore } from "pinia";
 
-import { defineStore } from 'pinia'
-
-
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
 const API_URL = HOST + '/api/v1'
 const USERS_URL = API_URL + '/users'
@@ -31,7 +28,7 @@ export const useUserStore = defineStore('User', {
       this.$state.lastName = data.user.lastName;
       this.$state.profilePicture = data.user.profilePicture;
       this.$state.groups = data.user.groups;
-      this.$state.currentGroup = data.user.currentGroup;
+      //this.$state.currentGroup = data.user.currentGroup;
     },
     async fetchUser() {
       const response = await fetch(USERS_URL+ '/' + this.$state.id,{
@@ -48,6 +45,12 @@ export const useUserStore = defineStore('User', {
       this.$state.email = data.email
       this.$state.nickname = data.nickname
     },
+    async getCurrentGroup() {
+      return $state.currentGroup;
+    },
+    async setCurrentGroup(groupId) {
+      this.$state.currentGroup = groupId;
+    },
     clearUser() {
       this.$state.id = null;
       this.$state.token = null;
@@ -59,8 +62,7 @@ export const useUserStore = defineStore('User', {
       this.$state.description = null;
       this.$state.groups = null;
       this.$state.currentGroup = null;
-    },
-    
+    },    
   },
   /*getters: {
     

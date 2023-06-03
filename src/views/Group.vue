@@ -37,11 +37,6 @@
         <!--CONTENITORE DELLE SPESE-->
         <v-col cols="12" sm="12" md="12">
           <div v-for="spesa in this.outgoing" :key="spesa">
-            <!--<div v-if="spesa.createdAt.substring(0, 7)!=spesa.createdAt.substring(0, 7)">
-                <v-card  color="primary">
-
-                </v-card>
-              </div>    -->
             <v-card style="margin-top: 6px; padding: 4px">
               <v-row no-gutters class="d-flex align-center">
                 <!--DATA SPESE-->
@@ -122,7 +117,9 @@
 <script>
 import { useUserStore } from "@/stores/user-store";
 const userStore = useUserStore();
-const urlGroup = "http://localhost:3001/api/v1/groups/";
+userStore.fetchUser()
+const API_URL = HOST + '/api/v1'
+const GROUPS_URL = API_URL + '/groups/' + userStore.currentGroup
 
 export default {
   mounted() {
@@ -158,7 +155,6 @@ export default {
     },
     convData(d) {
       let _data = d.substring(5, 7);
-      //console.log(_data)
       switch (_data) {
         case "01":
           _data = "GEN";
@@ -199,7 +195,6 @@ export default {
         default:
           _data = "!valid Format";
       }
-      console.log(_data);
       return _data;
     },
     getCredits(spesa) {
@@ -221,8 +216,8 @@ export default {
     },
     async getGroup() {
       try {
-        console.log("currentGroup: " + userStore.currentGroup);
-        const response = await fetch(urlGroup + userStore.currentGroup, {
+        //console.log("currentGroup: " + userStore.currentGroup);
+        const response = await fetch(GROUPS_URL, {
           method: "GET",
           headers: {
             "x-auth-token": userStore.token,
@@ -243,7 +238,7 @@ export default {
     async getGroupOutgoings() {
       try {
         const response = await fetch(
-          urlGroup + userStore.currentGroup + "/outgoings",
+          GROUPS_URL + "/outgoings",
           {
             method: "GET",
             headers: {
@@ -266,7 +261,7 @@ export default {
     async getGroupUsers() {
       try {
         const response = await fetch(
-          urlGroup + userStore.currentGroup + "/users",
+          GROUPS_URL + "/users",
           {
             method: "GET",
             headers: {

@@ -68,6 +68,39 @@ const routes = [
     ],
   },
   {
+    path: '/groups',
+    component: () => DefaultUser,
+    children: [
+      {
+        path: '',
+        name: 'groups',
+        component: () => ProfilePage,
+      },
+    ],
+  },
+  {
+    path: '/people',
+    component: () => DefaultUser,
+    children: [
+      {
+        path: '',
+        name: 'people',
+        component: () => ProfilePage,
+      },
+    ],
+  },
+  {
+    path: '/stats',
+    component: () => DefaultUser,
+    children: [
+      {
+        path: '',
+        name: 'stats',
+        component: () => ProfilePage,
+      },
+    ],
+  },
+  {
     path: '/profile',
     component: () => DefaultUser,
     children: [

@@ -40,16 +40,31 @@
           </v-col>
           <v-row justify="end" no-gutters class="d-flex flex-wrap-none">
             <v-col cols="auto">
-              <v-avatar
+              <div v-if="group.members.length<9">
+                <v-avatar
                 v-for="n in group.members.length"
                 :key="n"
                 class="flex-grow-1"
                 color="#secondary"
                 size="60"
                 style="margin-right: 15px"
-              >
-                <v-img :src="urlImg + group.members[n]"></v-img>
-              </v-avatar>
+                >
+                  <v-img :src="urlImg + group.members[n]"></v-img>
+                </v-avatar>
+              </div>
+              <div v-else>
+                <v-avatar
+                v-for="n in 8"
+                :key="n"
+                class="flex-grow-1"
+                color="#secondary"
+                size="60"
+                style="margin-right: 15px"
+                >
+                  <v-img :src="urlImg + group.members[n]"></v-img>
+                </v-avatar>
+              </div>
+              
             </v-col>
           </v-row>
           <v-card-actions>

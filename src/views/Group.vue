@@ -117,10 +117,10 @@
 <script>
 import { useUserStore } from "@/stores/user-store";
 const userStore = useUserStore();
-userStore.fetchUser()
+//userStore.fetchUser()
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
 const API_URL = HOST + '/api/v1'
-const GROUPS_URL = API_URL + '/groups/' + userStore.currentGroup
+const GROUPS_URL = API_URL + '/groups/'
 
 export default {
   mounted() {
@@ -218,7 +218,9 @@ export default {
     async getGroup() {
       try {
         //console.log("currentGroup: " + userStore.currentGroup);
-        const response = await fetch(GROUPS_URL, {
+        const response = await fetch(
+          GROUPS_URL
+          + userStore.currentGroup, {
           method: "GET",
           headers: {
             "x-auth-token": userStore.token,
@@ -239,7 +241,9 @@ export default {
     async getGroupOutgoings() {
       try {
         const response = await fetch(
-          GROUPS_URL + "/outgoings",
+          GROUPS_URL 
+          + userStore.currentGroup
+          + "/outgoings",
           {
             method: "GET",
             headers: {
@@ -262,7 +266,9 @@ export default {
     async getGroupUsers() {
       try {
         const response = await fetch(
-          GROUPS_URL + "/users",
+          GROUPS_URL 
+          + userStore.currentGroup
+          + "/users",
           {
             method: "GET",
             headers: {

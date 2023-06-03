@@ -40,30 +40,31 @@
           </v-col>
           <v-row justify="end" no-gutters class="d-flex flex-wrap-none">
             <v-col cols="auto">
-              <div v-if="group.members.length < 9">
+              <div v-if="group.members.length<9">
                 <v-avatar
-                  v-for="n in group.members.length"
-                  :key="n"
-                  class="flex-grow-1"
-                  color="#secondary"
-                  size="60"
-                  style="margin-right: 15px"
+                v-for="n in group.members.length"
+                :key="n"
+                class="flex-grow-1"
+                color="#secondary"
+                size="60"
+                style="margin-right: 15px"
                 >
                   <v-img :src="urlImg + group.members[n]"></v-img>
                 </v-avatar>
               </div>
               <div v-else>
                 <v-avatar
-                  v-for="n in 8"
-                  :key="n"
-                  class="flex-grow-1"
-                  color="#secondary"
-                  size="60"
-                  style="margin-right: 15px"
+                v-for="n in 8"
+                :key="n"
+                class="flex-grow-1"
+                color="#secondary"
+                size="60"
+                style="margin-right: 15px"
                 >
                   <v-img :src="urlImg + group.members[n]"></v-img>
                 </v-avatar>
               </div>
+              
             </v-col>
           </v-row>
           <v-card-actions>
@@ -83,14 +84,7 @@
     </v-col>
 
     <div
-      style="
-        float: right;
-        position: fixed;
-        height: auto;
-        width: auto;
-        bottom: 40px;
-        right: 40px;
-      "
+      style="float: right;  position: fixed;  height: auto; width: auto;  bottom: 40px; right: 40px;"
     >
       <v-btn @click="goto('/create-group')"> Crea gruppo </v-btn>
     </div>
@@ -101,9 +95,9 @@
 import { useUserStore } from "@/stores/user-store";
 
 const userStore = useUserStore();
-const HOST = import.meta.env.VITE_APP_API_HOST || "http://localhost:3001";
-const API_URL = HOST + "/api/v1";
-const USERS_URL = API_URL + "/users/" + userStore.id;
+const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
+const API_URL = HOST + '/api/v1'
+const USERS_URL = API_URL + '/users/' + userStore.id
 
 export default {
   mounted() {

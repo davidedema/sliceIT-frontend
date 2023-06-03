@@ -79,7 +79,7 @@ const routes = [
     ],
   },
   {
-    path: '/group',
+path: '/groups/:id',
     component: () => DefaultUser,
     children: [
       {

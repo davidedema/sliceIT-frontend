@@ -36,7 +36,7 @@
         </v-row>
         <!--CONTENITORE DELLE SPESE-->
         <v-col cols="12" sm="12" md="12">
-          <div v-for="spesa in this.outgoing" :key="spesa">
+          <div v-for="spesa in this.outgoing.slice().reverse()" :key="spesa">
             <v-card style="margin-top: 6px; padding: 4px">
               <v-row no-gutters class="d-flex align-center">
                 <!--DATA SPESE-->
@@ -133,7 +133,7 @@ export default {
   data() {
     return {
       group: "",
-      outgoing: "",
+      outgoing: [],
       members: "",
       urlImg: "https://robohash.org/",
       currentUser: userStore.id,
@@ -214,6 +214,9 @@ export default {
           return spesa.users[i].value;
         }
       }
+    },
+    reversedOutgoings() {
+      return this.outgoings.slice().reverse();
     },
     async getGroup() {
       try {

@@ -1,5 +1,4 @@
 <template>
-    <!-- ! BOTTONE CREA DISABLING UN PO' BUGGATO -->
     <v-row justify="center">
         <v-dialog v-model="dialog" width="1024">
             <template v-slot:activator="{ props }">
@@ -139,7 +138,6 @@
                 this.isPeriodic = !this.isPeriodic;
             },
             async fetchUsers() {
-                userStore.currentGroup = "645a61e383d06be08c4252b7"
                 try {
                     const response = await fetch(GET_GROUP_URL + userStore.currentGroup + '/', {
                         method: 'GET',

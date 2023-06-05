@@ -91,6 +91,16 @@
                     </h4>
                   </div>
                 </v-col>
+                <!--BOTTONE PER MODIFICARE LA SPESA-->
+                <v-col cols="1">
+                  <v-btn
+                    icon
+                    @click="editSpesa(spesa)"
+                    style="margin-left: 10px"
+                  >
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                </v-col>
               </v-row>
             </v-card>
           </div>
@@ -111,6 +121,12 @@
         </v-col>
       </v-col>
     </v-row>
+    <!--BOTTONE PER CREARE UNA NUOVA SPESA-->
+    <div
+      style="float: right;  position: fixed;  height: auto; width: auto;  bottom: 40px; right: 40px;"
+    >
+      <v-btn > Crea spesa </v-btn>
+    </div>
   </main>
 </template>
 

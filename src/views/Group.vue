@@ -107,13 +107,14 @@
     </v-row>
     <!--BOTTONE PER CREARE UNA NUOVA SPESA-->
     <div style="float: right;  position: fixed;  height: auto; width: auto;  bottom: 40px; right: 40px;">
-      <v-btn> Crea spesa </v-btn>
+      <NewOut />
     </div>
   </main>
 </template>
 
 <script>
 import { useUserStore } from "@/stores/user-store";
+import NewOut from "@/components/NewOut.vue";
 const userStore = useUserStore();
 //userStore.fetchUser()
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
@@ -126,7 +127,9 @@ export default {
     this.getGroupOutgoings();
     this.getGroupUsers();
   },
-
+  components: {
+    NewOut,
+  },
   name: "getGroups",
   data() {
     return {
@@ -219,8 +222,7 @@ export default {
     async getGroup() {
       try {
         //console.log("currentGroup: " + userStore.currentGroup);
-        const response = await fetch(
-          GROUPS_URL
+        const response = await fetch(GROUPS_URL
           + userStore.currentGroup, {
           method: "GET",
           headers: {
@@ -230,63 +232,63 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.group = data;
-        } else {
+        }
+        else {
           // Handle error response from the server
           const errorData = await response.json();
           console.error("response failed:", errorData.message);
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.error("error:", error);
       }
     },
     async getGroupOutgoings() {
       try {
-        const response = await fetch(
-          GROUPS_URL
+        const response = await fetch(GROUPS_URL
           + userStore.currentGroup
-          + "/outgoings",
-          {
-            method: "GET",
-            headers: {
-              "x-auth-token": userStore.token,
-            },
-          }
-        );
+          + "/outgoings", {
+          method: "GET",
+          headers: {
+            "x-auth-token": userStore.token,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           this.outgoing = data;
-        } else {
+        }
+        else {
           // Handle error response from the server
           const errorData = await response.json();
           console.error("response failed:", errorData.message);
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.error("error:", error);
       }
     },
     async getGroupUsers() {
       try {
-        const response = await fetch(
-          GROUPS_URL
+        const response = await fetch(GROUPS_URL
           + userStore.currentGroup
-          + "/users",
-          {
-            method: "GET",
-            headers: {
-              "x-auth-token": userStore.token,
-            },
-          }
-        );
+          + "/users", {
+          method: "GET",
+          headers: {
+            "x-auth-token": userStore.token,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           this.members = data;
           console.log(data);
-        } else {
+        }
+        else {
           // Handle error response from the serv
           const errorData = await response.json();
           console.error("response failed:", errorData.message);
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.error("error:", error);
       }
     },

@@ -146,7 +146,7 @@ export default {
         async fetchOutgoing() {
             console.log(this.spesaId)
             try {
-                const response = await fetch(GET_GROUP_URL + userStore.groups + '/', {
+                const response = await fetch(GET_GROUP_URL + userStore.currentGroup + '/', {
                     method: 'GET',
                     headers: {
                         'x-auth-token': userStore.token,

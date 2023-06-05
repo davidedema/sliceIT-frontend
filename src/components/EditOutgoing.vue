@@ -98,9 +98,14 @@ const EDIT_OUT_URL = API_URL + '/outgoings/'
 const GET_USER_URL = API_URL + '/users/'
 const GET_GROUP_URL = API_URL + '/groups/'
 const GET_OUT_URL = API_URL + '/outgoings/'
-const TEST_OUT = '646c8b62da9ddeb0dd4d0de6'
 
 export default {
+    props: {
+        spesaId: {
+            type: String,
+            default: ''
+        }
+    },
     data: () => ({
         dialog: false,
         isSubmitDisabled: true,
@@ -139,7 +144,7 @@ export default {
             this.isPeriodic = !this.isPeriodic;
         },
         async fetchOutgoing() {
-            userStore.groups = "645a61e383d06be08c4252b7"
+            console.log(this.spesaId)
             try {
                 const response = await fetch(GET_GROUP_URL + userStore.groups + '/', {
                     method: 'GET',
@@ -173,7 +178,7 @@ export default {
                 console.log(error)
             }
             try {
-                const response = await fetch(GET_OUT_URL + TEST_OUT, {
+                const response = await fetch(GET_OUT_URL + this.spesaId, {
                     method: 'GET',
                     headers: {
                         'x-auth-token': userStore.token,

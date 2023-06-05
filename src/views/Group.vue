@@ -81,7 +81,7 @@
                 </v-col>
                 <!--BOTTONE PER MODIFICARE LA SPESA-->
                 <v-col cols="1">
-                  <EditOutgoing />
+                  <EditOutgoing :spesaId="spesa._id"></EditOutgoing>
                 </v-col>
               </v-row>
             </v-card>
@@ -149,7 +149,6 @@ export default {
     },
     getPaidBy(userId) {
       for (let i = 0; i < this.members.length; i++) {
-        console.log(this.members[i]._id);
         if (this.members[i]._id == userId) {
           return this.members[i].nickname;
         }
@@ -210,7 +209,6 @@ export default {
     },
     getDebits(spesa) {
       for (let i = 0; i < spesa.users.length; i++) {
-        console.log(spesa.users[i].value);
         if (spesa.users[i].user == userStore.id) {
           return spesa.users[i].value;
         }
@@ -221,7 +219,6 @@ export default {
     },
     async getGroup() {
       try {
-        //console.log("currentGroup: " + userStore.currentGroup);
         const response = await fetch(GROUPS_URL
           + userStore.currentGroup, {
           method: "GET",
@@ -280,7 +277,6 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.members = data;
-          console.log(data);
         }
         else {
           // Handle error response from the serv

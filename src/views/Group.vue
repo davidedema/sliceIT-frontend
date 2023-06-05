@@ -126,14 +126,15 @@ export default {
     this.getGroup();
     this.getGroupOutgoings();
     this.getGroupUsers();
+    this.getGroupBalance()
   },
 
   name: "getGroups",
   data() {
     return {
-      group: "",
-      outgoing: "",
-      members: "",
+      group: [],
+      outgoing: [],
+      members: [],
       urlImg: "https://robohash.org/",
       currentUser: userStore.id,
     };
@@ -272,6 +273,32 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.members = data;
+          console.log(data);
+        } else {
+          // Handle error response from the serv
+          const errorData = await response.json();
+          console.error("response failed:", errorData.message);
+        }
+      } catch (error) {
+        console.error("error:", error);
+      }
+    },
+    async getGroupBalace() {
+      try {
+        const response = await fetch(
+          GROUPS_URL 
+          + userStore.currentGroup
+          + "/balance",
+          {
+            method: "GET",
+            headers: {
+              "x-auth-token": userStore.token,
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          this.balance = data;
           console.log(data);
         } else {
           // Handle error response from the serv

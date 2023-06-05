@@ -81,9 +81,7 @@
                 </v-col>
                 <!--BOTTONE PER MODIFICARE LA SPESA-->
                 <v-col cols="1">
-                  <v-btn icon @click="editSpesa(spesa)" style="margin-left: 10px">
-                    <v-icon>mdi-pencil</v-icon>
-                  </v-btn>
+                  <EditOutgoing />
                 </v-col>
               </v-row>
             </v-card>
@@ -115,6 +113,7 @@
 <script>
 import { useUserStore } from "@/stores/user-store";
 import NewOut from "@/components/NewOut.vue";
+import EditOutgoing from "@/components/EditOutgoing.vue";
 const userStore = useUserStore();
 //userStore.fetchUser()
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
@@ -129,6 +128,7 @@ export default {
   },
   components: {
     NewOut,
+    EditOutgoing,
   },
   name: "getGroups",
   data() {

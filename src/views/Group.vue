@@ -2,20 +2,8 @@
   <header>
     <v-row no-gutters class="d-flex align-center" style="padding: 6px">
       <v-col cols="1">
-        <v-avatar
-          class="flex-grow-1"
-          color="secondary"
-          size="80"
-          style="margin-right: 10px"
-        >
-          <v-img
-            :src="urlImg + group.name"
-            height="80px"
-            :aspect-ratio="1"
-            cover
-            position="left"
-            class="text-white"
-          >
+        <v-avatar class="flex-grow-1" color="secondary" size="80" style="margin-right: 10px">
+          <v-img :src="urlImg + group.name" height="80px" :aspect-ratio="1" cover position="left" class="text-white">
           </v-img>
         </v-avatar>
       </v-col>
@@ -93,11 +81,7 @@
                 </v-col>
                 <!--BOTTONE PER MODIFICARE LA SPESA-->
                 <v-col cols="1">
-                  <v-btn
-                    icon
-                    @click="editSpesa(spesa)"
-                    style="margin-left: 10px"
-                  >
+                  <v-btn icon @click="editSpesa(spesa)" style="margin-left: 10px">
                     <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                 </v-col>
@@ -122,10 +106,8 @@
       </v-col>
     </v-row>
     <!--BOTTONE PER CREARE UNA NUOVA SPESA-->
-    <div
-      style="float: right;  position: fixed;  height: auto; width: auto;  bottom: 40px; right: 40px;"
-    >
-      <v-btn > Crea spesa </v-btn>
+    <div style="float: right;  position: fixed;  height: auto; width: auto;  bottom: 40px; right: 40px;">
+      <v-btn> Crea spesa </v-btn>
     </div>
   </main>
 </template>
@@ -260,7 +242,7 @@ export default {
     async getGroupOutgoings() {
       try {
         const response = await fetch(
-          GROUPS_URL 
+          GROUPS_URL
           + userStore.currentGroup
           + "/outgoings",
           {
@@ -285,7 +267,7 @@ export default {
     async getGroupUsers() {
       try {
         const response = await fetch(
-          GROUPS_URL 
+          GROUPS_URL
           + userStore.currentGroup
           + "/users",
           {

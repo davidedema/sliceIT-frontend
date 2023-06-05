@@ -3,6 +3,7 @@
     app
     floating
     permanent
+    style="position:fixed"
   >
     <v-list
       density="compact"

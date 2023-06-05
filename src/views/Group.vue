@@ -2,20 +2,8 @@
   <header>
     <v-row no-gutters class="d-flex align-center" style="padding: 6px">
       <v-col cols="1">
-        <v-avatar
-          class="flex-grow-1"
-          color="secondary"
-          size="80"
-          style="margin-right: 10px"
-        >
-          <v-img
-            :src="urlImg + group.name"
-            height="80px"
-            :aspect-ratio="1"
-            cover
-            position="left"
-            class="text-white"
-          >
+        <v-avatar class="flex-grow-1" color="secondary" size="80" style="margin-right: 10px">
+          <v-img :src="urlImg + group.name" height="80px" :aspect-ratio="1" cover position="left" class="text-white">
           </v-img>
         </v-avatar>
       </v-col>
@@ -36,7 +24,7 @@
         </v-row>
         <!--CONTENITORE DELLE SPESE-->
         <v-col cols="12" sm="12" md="12">
-          <div v-for="spesa in this.outgoing" :key="spesa">
+          <div v-for="spesa in this.outgoing.slice().reverse()" :key="spesa">
             <v-card style="margin-top: 6px; padding: 4px">
               <v-row no-gutters class="d-flex align-center">
                 <!--DATA SPESE-->
@@ -91,6 +79,10 @@
                     </h4>
                   </div>
                 </v-col>
+                <!--BOTTONE PER MODIFICARE LA SPESA-->
+                <v-col cols="1">
+                  <EditOutgoing :spesaId="spesa._id"></EditOutgoing>
+                </v-col>
               </v-row>
             </v-card>
           </div>
@@ -111,15 +103,22 @@
         </v-col>
       </v-col>
     </v-row>
+    <!--BOTTONE PER CREARE UNA NUOVA SPESA-->
+    <div style="float: right;  position: fixed;  height: auto; width: auto;  bottom: 40px; right: 40px;">
+      <NewOut />
+    </div>
   </main>
 </template>
 
 <script>
 import { useUserStore } from "@/stores/user-store";
+import NewOut from "@/components/NewOut.vue";
+import EditOutgoing from "@/components/EditOutgoing.vue";
 const userStore = useUserStore();
-userStore.fetchUser()
+//userStore.fetchUser()
+const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
 const API_URL = HOST + '/api/v1'
-const GROUPS_URL = API_URL + '/groups/' + userStore.currentGroup
+const GROUPS_URL = API_URL + '/groups/'
 
 export default {
   mounted() {
@@ -128,7 +127,10 @@ export default {
     this.getGroupUsers();
     this.getGroupBalance()
   },
-
+  components: {
+    NewOut,
+    EditOutgoing,
+  },
   name: "getGroups",
   data() {
     return {
@@ -148,7 +150,6 @@ export default {
     },
     getPaidBy(userId) {
       for (let i = 0; i < this.members.length; i++) {
-        console.log(this.members[i]._id);
         if (this.members[i]._id == userId) {
           return this.members[i].nickname;
         }
@@ -209,16 +210,18 @@ export default {
     },
     getDebits(spesa) {
       for (let i = 0; i < spesa.users.length; i++) {
-        console.log(spesa.users[i].value);
         if (spesa.users[i].user == userStore.id) {
           return spesa.users[i].value;
         }
       }
     },
+    reversedOutgoings() {
+      return this.outgoings.slice().reverse();
+    },
     async getGroup() {
       try {
-        //console.log("currentGroup: " + userStore.currentGroup);
-        const response = await fetch(GROUPS_URL, {
+        const response = await fetch(GROUPS_URL
+          + userStore.currentGroup, {
           method: "GET",
           headers: {
             "x-auth-token": userStore.token,
@@ -227,59 +230,62 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.group = data;
-        } else {
+        }
+        else {
           // Handle error response from the server
           const errorData = await response.json();
           console.error("response failed:", errorData.message);
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.error("error:", error);
       }
     },
     async getGroupOutgoings() {
       try {
-        const response = await fetch(
-          GROUPS_URL + "/outgoings",
-          {
-            method: "GET",
-            headers: {
-              "x-auth-token": userStore.token,
-            },
-          }
-        );
+        const response = await fetch(GROUPS_URL
+          + userStore.currentGroup
+          + "/outgoings", {
+          method: "GET",
+          headers: {
+            "x-auth-token": userStore.token,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           this.outgoing = data;
-        } else {
+        }
+        else {
           // Handle error response from the server
           const errorData = await response.json();
           console.error("response failed:", errorData.message);
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.error("error:", error);
       }
     },
     async getGroupUsers() {
       try {
-        const response = await fetch(
-          GROUPS_URL + "/users",
-          {
-            method: "GET",
-            headers: {
-              "x-auth-token": userStore.token,
-            },
-          }
-        );
+        const response = await fetch(GROUPS_URL
+          + userStore.currentGroup
+          + "/users", {
+          method: "GET",
+          headers: {
+            "x-auth-token": userStore.token,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           this.members = data;
-          console.log(data);
-        } else {
+        }
+        else {
           // Handle error response from the serv
           const errorData = await response.json();
           console.error("response failed:", errorData.message);
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.error("error:", error);
       }
     },
@@ -305,7 +311,8 @@ export default {
           const errorData = await response.json();
           console.error("response failed:", errorData.message);
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.error("error:", error);
       }
     },

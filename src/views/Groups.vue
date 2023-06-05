@@ -10,7 +10,7 @@
   <main>
     <v-col cols="12" sm="12" md="12">
       <v-card
-        @click="goto('/groups/' + group._id), setCurrentGroup(group._id)"
+        @click="goto('/groups/' + group._id), selectGroup(group._id)"
         v-for="group in this.groups"
         style="margin-bottom: 6px; padding: 6px; height: 100%; width: 100%"
       >
@@ -95,6 +95,8 @@
 import { useUserStore } from "@/stores/user-store";
 
 const userStore = useUserStore();
+const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
+const API_URL = HOST + '/api/v1'
 const USERS_URL = API_URL + '/users/' + userStore.id
 
 export default {
@@ -121,7 +123,7 @@ export default {
     async getGroups() {
       try {
         console.log("id: " + userStore.id);
-        const response = await fetch(USERS_URL + userStore.id + "/groups", {
+        const response = await fetch(USERS_URL + "/groups", {
           method: "GET",
           headers: {
             "x-auth-token": userStore.token,

@@ -1,6 +1,4 @@
-
-import { defineStore } from 'pinia'
-
+import { defineStore } from "pinia";
 
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
 const API_URL = HOST + '/api/v1'
@@ -30,7 +28,7 @@ export const useUserStore = defineStore('User', {
       this.$state.lastName = data.user.lastName;
       this.$state.profilePicture = data.user.profilePicture;
       this.$state.groups = data.user.groups;
-      console.log('setUserDetails', this.$state)
+      //this.$state.currentGroup = data.user.currentGroup;
     },
     async fetchUser() {
       const response = await fetch(USERS_URL+ '/' + this.$state.id,{
@@ -47,17 +45,30 @@ export const useUserStore = defineStore('User', {
       this.$state.email = data.email
       this.$state.nickname = data.nickname
     },
-    clearUser() {
-      this.$state.id = null
-      this.$state.token = null
-      this.$state.firstName = null
-      this.$state.lastName = null
-      this.$state.email = null
-      this.$state.location = null
-      this.$state.image = null
-      this.$state.description = null
+    async getCurrentGroup() {
+      return $state.currentGroup;
     },
+    async setCurrentGroup(groupId) {
+      this.$state.currentGroup = groupId;
+    },
+    clearUser() {
+      this.$state.id = null;
+      this.$state.token = null;
+      this.$state.firstName = null;
+      this.$state.lastName = null;
+      this.$state.email = null;
+      this.$state.location = null;
+      this.$state.image = null;
+      this.$state.description = null;
+      this.$state.groups = null;
+      this.$state.currentGroup = null;
+    },    
   },
-  persist: true
-})
-
+  /*getters: {
+    
+  },
+  mutations: {
+    
+  },*/
+  persist: true,
+});

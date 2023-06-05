@@ -81,9 +81,89 @@
                 </v-col>
                 <!--BOTTONE PER MODIFICARE LA SPESA-->
                 <v-col cols="1">
-                  <v-btn icon @click="editSpesa(spesa)" style="margin-left: 10px">
-                    <v-icon>mdi-pencil</v-icon>
-                  </v-btn>
+                  <v-dialog v-model="dialog" width="1024">
+                    <template v-slot:activator="{ props }">
+                      <v-card-actions>
+                        <v-btn icon color="primary" auto @click="fetchOutgoing" v-bind="props" style="margin-left: 10px">
+                          <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                      </v-card-actions>
+                    </template>
+                    <v-card>
+                      <v-card-title>
+                        <span class="text-h5">Modifica Spesa</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-row>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-text-field label="Nome spesa*" v-model="nome" :rules="[rules.required]"
+                                @update:model-value="checkFormValidity" required>
+                              </v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-autocomplete label="Pagata da*" v-model="pagataDa"
+                                @update:model-value="checkFormValidity" :items="partecipanti.map(item => item.nickname)"
+                                required>
+                              </v-autocomplete>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-text-field label="Importo*" v-model="importo" :rules="[rules.number]"
+                                hint="Inserire importo in euro" @update:model-value="checkFormValidity" required>
+                              </v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-text-field label="Descrizione" v-model="descrizione" hint="Massimo 100 caratteri"
+                                required>
+                              </v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="6">
+                              <v-autocomplete label="Partecipanti*" :items="partecipanti.map(item => item.nickname)"
+                                v-model="aux" @update:model-value="updateSelected(); checkFormValidity();" multiple
+                                required>
+                              </v-autocomplete>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="6">
+                              <component v-for="(select, index) in selected" :key="index">
+                                <v-row>
+                                  <v-col cols="12" sm="6" md="6">
+                                    <!-- NOME PARTECIPANE -->
+                                    <v-card auto :title="select.user"></v-card>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="6">
+                                    <!-- IMPORTO DA PAGARE -->
+                                    <v-text-field v-model="select.value" label="Importo*" hint="Importo dovuto"
+                                      required></v-text-field>
+                                  </v-col>
+                                </v-row>
+                              </component>
+                            </v-col>
+                          </v-row>
+                          <v-row>
+                            <v-col cols="12" sm="6" md="6">
+                              <v-autocomplete v-model="periodo" label="Periodicità*"
+                                :items="['Giornaliera', 'Settimanale', 'Mensile']" @update:model-value="checkFormValidity"
+                                :disabled="!isPeriodic" required></v-autocomplete>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="6">
+                              <v-switch v-model="isPeriodic" label="È periodica" @click="setPeriodic"
+                                @update:model-value="checkFormValidity">
+                              </v-switch>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+                          Chiudi
+                        </v-btn>
+                        <v-btn color="blue-darken-1" variant="text" @click="submitForm" :disabled="isSubmitDisabled">
+                          Salva
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
                 </v-col>
               </v-row>
             </v-card>
@@ -202,7 +282,9 @@ const API_URL = HOST + '/api/v1'
 const GROUPS_URL = API_URL + '/groups/'
 const NEW_OUT_URL = API_URL + '/outgoings'
 const GET_USER_URL = API_URL + '/users/'
+const GET_OUT_URL = API_URL + '/outgoings/'
 const GET_GROUP_URL = API_URL + '/groups/'
+const TEST_OUT = '646c8b62da9ddeb0dd4d0de6'
 
 export default {
   mounted() {
@@ -218,7 +300,9 @@ export default {
       outgoing: [],
       members: "",
       urlImg: "https://robohash.org/",
-      currentUser: userStore.id, dialog: false,
+      currentUser: userStore.id,
+      dialog: false,
+
       isSubmitDisabled: true,
       nome: '',
       pagataDa: '',
@@ -520,7 +604,140 @@ export default {
       } else {
         this.isSubmitDisabled = true
       }
-    }
+    },
+    async fetchOutgoing() {
+      try {
+        const response = await fetch(GET_GROUP_URL + userStore.groups + '/', {
+          method: 'GET',
+          headers: {
+            'x-auth-token': userStore.token,
+          }
+        })
+        if (response.ok) {
+          const data = await response.json()
+          this.partecipanti = data.members.map(member => {
+            return {
+              id: member,
+              nickname: '',
+            }
+          })
+          for (let i = 0; i < data.members.length; i++) {
+
+            let response = await fetch(GET_USER_URL + this.partecipanti[i].id + '/', {
+              method: 'GET',
+              headers: {
+                'x-auth-token': userStore.token,
+              }
+            })
+            if (response.ok) {
+              const data = await response.json()
+              this.partecipanti[i].nickname = data.nickname
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        const response = await fetch(GET_OUT_URL + TEST_OUT, {
+          method: 'GET',
+          headers: {
+            'x-auth-token': userStore.token,
+          }
+        })
+        if (response.status == 200) {
+          const data = await response.json()
+          this.nome = data.name
+          this.descrizione = data.description
+          this.importo = data.value
+          this.pagataDa = data.paidBy
+          this.selected = []
+          for (let i = 0; i < data.users.length; i++) {
+            this.selected.push({
+              user: data.users[i].user,
+              value: data.users[i].value,
+            })
+          }
+          // trasformo id a nicknames
+          for (let i = 0; i < this.partecipanti.length; i++) {
+            if (this.partecipanti[i].id == this.pagataDa) {
+              this.pagataDa = this.partecipanti[i].nickname
+            }
+          }
+          for (let i = 0; i < this.selected.length; i++) {
+            for (let j = 0; j < this.partecipanti.length; j++) {
+              if (this.selected[i].user == this.partecipanti[j].id) {
+                this.selected[i].user = this.partecipanti[j].nickname
+              }
+            }
+          }
+          this.isPeriodic = data.periodicity.isPeriodic
+          this.periodo = data.periodicity.days
+        }
+      } catch (error) {
+
+      }
+    },
+    submitForm() {
+      // trasformo i nickname in id
+      if (this.selected.length > 0) {
+        for (let i = 0; i < this.selected.length; i++) {
+          for (let j = 0; j < this.partecipanti.length; j++) {
+            if (this.selected[i].user == this.partecipanti[j].nickname) {
+              this.selected[i].user = this.partecipanti[j].id
+            }
+          }
+        }
+      }
+
+      // paidby to id
+      for (let i = 0; i < this.partecipanti.length; i++) {
+        if (this.pagataDa == this.partecipanti[i].nickname) {
+          this.pagataDa = this.partecipanti[i].id
+        }
+      }
+
+      // trasformo i giorni in numeri
+      if (this.isPeriodic) {
+        if (this.periodo == 'giornaliera') {
+          this.periodo = 1
+        } else if (this.periodo == 'settimanale') {
+          this.periodo = 7
+        } else if (this.periodo == 'mensile') {
+          this.periodo = 30
+        }
+      }
+
+      // dati da inviare
+      const data = {
+        name: this.nome,
+        description: this.descrizione,
+        value: this.importo,
+        paidBy: this.pagataDa,
+        users: this.selected,
+        group: userStore.groups,
+        periodicity: {
+          isPeriodic: this.isPeriodic,
+          days: this.periodo,
+        },
+        tag: null,
+      }
+      try {
+        const response = fetch(EDIT_OUT_URL + TEST_OUT, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': userStore.token,
+          },
+          body: JSON.stringify(data),
+        })
+        if (response.status == 201) {
+          this.dialog = false
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
   },
 };
 </script>

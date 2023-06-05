@@ -3,8 +3,8 @@
         <v-dialog v-model="dialog" width="1024">
             <template v-slot:activator="{ props }">
                 <v-card-actions>
-                    <v-btn color="primary" auto @click="fetchOutgoing" v-bind="props">
-                        Modifica spesa
+                    <v-btn icon color="primary" auto @click="fetchOutgoing" v-bind="props" style="margin-left: 10px">
+                        <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                 </v-card-actions>
             </template>

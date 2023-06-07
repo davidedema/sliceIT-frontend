@@ -8,6 +8,7 @@ const RegisterPage = import('@/views/Register.vue')
 const HelpPage = import('@/views/Help.vue')
 const HomePage = import('@/views/Home.vue')
 const ProfilePage = import('@/views/Profilo.vue')
+const peoplePage = import('@/views/People.vue')
 
 const routes = [
   {
@@ -83,7 +84,7 @@ const routes = [
       {
         path: '',
         name: 'people',
-        component: () => ProfilePage,
+        component: () => peoplePage,
       },
     ],
   },

@@ -11,7 +11,7 @@
                     </v-card-title>
                     <v-card-text>
                         <p class="text-h2 text-center text-success">
-                            $ +19.64
+                            $ +{{this.creditors.total}}
                         </p>
                     </v-card-text>
                 </v-card>
@@ -24,8 +24,11 @@
                         </p>
                     </v-card-title>
                     <v-card-text>
-                        <p class="text-h2 text-center">
-                            $ -35.36
+                        <p v-bind:class="{
+                            'text-h2 text-center text-success': (this.creditors.total - this.debtors.total) > 0,
+                            'text-h2 text-center text-error': (this.creditors.total - this.debtors.total) < 0
+                        }">
+                            $ {{ this.creditors.total - this.debtors.total }}
                         </p>
                     </v-card-text>
                 </v-card>
@@ -39,7 +42,7 @@
                     </v-card-title>
                     <v-card-text>
                         <p class="text-h2 text-center text-error">
-                            $ -55.00
+                            $ -{{this.debtors.total}}
                         </p>
                     </v-card-text>
                 </v-card>
@@ -50,38 +53,32 @@
 
         <v-row>
             <v-col cols="4">
-                <v-card elevation="0">
+                <v-card elevation="0" v-for="item in creditors.creditors" :key="item.creditor">
                     <v-card-title>
                         <p class="text-h5 text-right">
-                            Carlo Verdi $ 5.00
+                            {{ item.creditor }}
                         </p>
                     </v-card-title>
-                    <v-card-text>
+                    <v-card-text v-for="i in item.value" :key="i.group">
                         <p class="text-body-1 text-right">
-                            dal gruppo Mikonos $ 2.16 
-                        </p>
-                        <p class="text-body-1 text-right">
-                            dal gruppo Cenone $ 1.84
-                        </p>
-                        <p class="text-body-1 text-right">
-                            dal gruppo Squadra $ 1.00 
+                            dal gruppo {{ i.group }} $ {{ i.money}} 
                         </p>
                     </v-card-text>
                 </v-card>
             </v-col>
-            <v-col cols="4">
+            <v-col cols="4" class="text-center">
                 <!-- colonna totale vuota -->
             </v-col>
             <v-col  cols="4">
-                <v-card elevation="0">
+                <v-card elevation="0" v-for="item in debtors.debtors" :key="item.debtor">
                     <v-card-title>
                         <p class="text-h5 text-left">
-                            Giuseppe B... $ 29.36
+                            {{ item.debtors }}
                         </p>
                     </v-card-title>
-                    <v-card-text>
+                    <v-card-text v-for="i in item.value" :key="i.group">
                         <p class="text-body-1 text-left">
-                            dal gruppo Mikonos $ 29.36 
+                            dal gruppo {{ i.group }} $ {{ i.money}} 
                         </p>
                     </v-card-text>
                 </v-card>
@@ -91,5 +88,54 @@
 </template>
 
 <script>
-    
+    import { useUserStore } from '@/stores/user-store'
+
+    const userStore = useUserStore()
+    userStore.fetchUser()
+    const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
+    const API_URL = HOST + '/api/v1'
+    const EDIT_URL = API_URL + '/users/' + userStore.id
+    const HOME_URL = EDIT_URL + '/report'
+
+    export default {
+        name: 'Report',
+        mounted () {
+            this.getReport()
+        },
+        data () {
+            return {
+                debtors: {},
+                creditors: {},
+            }
+        },
+        methods: {
+            getNameGroup (idGroup) {
+                for ( let i = 0; i < userStore.groups.length; i++ ) {
+                    if ( userStore.groups[i].id === idGroup ) {
+                        return userStore.groups[i].name
+                    }
+                }
+            },
+            async getReport () {
+                try {
+                    const response = await fetch(HOME_URL, {
+                        method: 'GET',
+                        headers: {
+                            "x-auth-token": userStore.token,
+                        }
+                    });
+                    if (response.ok) {
+                        const data = await response.json()
+                        this.debtors = data.debtors
+                        this.creditors = data.creditors
+                    } else {
+                        const errorData = await response.json();
+                        console.error("response failed:", errorData.message);
+                    }
+                } catch (error) {
+                    console.error("error: ", error);
+                }
+            } 
+        }
+    }
 </script>

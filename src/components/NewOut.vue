@@ -66,6 +66,10 @@
                                 @update:model-value="checkFormValidity">
                             </v-switch>
                         </v-col>
+                        <v-col cols="12" sm="6" md="6">
+                            <v-autocomplete v-model="tag" label="Tag"
+                                :items="['Spesa', 'Casa', 'Svago', 'Altro']"></v-autocomplete>
+                        </v-col>
                     </v-row>
                 </v-container>
                 <small>*Campi obbligatori</small>
@@ -110,6 +114,7 @@ export default {
         aux: [],
         isPeriodic: false,
         periodo: '',
+        tag: '',
         rules: {
             required: v => !!v || 'Required.',
             min: v => v.length >= 8 || 'Min 8 characters',
@@ -208,7 +213,7 @@ export default {
                     isPeriodic: this.isPeriodic,
                     days: this.periodo,
                 },
-                tag: null,
+                tag: this.tag,
             }
             try {
                 const response = fetch(NEW_OUT_URL, {

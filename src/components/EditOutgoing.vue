@@ -70,7 +70,11 @@
                                     @update:model-value="checkFormValidity">
                                 </v-switch>
                             </v-col>
+                            <v-col cols="12" sm="6" md="6">
+                                <v-autocomplete v-model="tag" label="Tag" :items="['Spesa', 'Casa', 'Svago', 'Altro']"></v-autocomplete>
+                            </v-col>
                         </v-row>
+                        
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
@@ -121,6 +125,7 @@ export default {
         aux: [],
         isPeriodic: false,
         periodo: '',
+        tag: '',
         rules: {
             required: v => !!v || 'Required.',
             min: v => v.length >= 8 || 'Min 8 characters',
@@ -254,15 +259,15 @@ export default {
                 value: this.importo,
                 paidBy: this.pagataDa,
                 users: this.selected,
-                group: userStore.groups,
+                group: userStore.currentGroup,
                 periodicity: {
                     isPeriodic: this.isPeriodic,
                     days: this.periodo,
                 },
-                tag: null,
+                tag: this.tag,
             }
             try {
-                const response = fetch(EDIT_OUT_URL + TEST_OUT, {
+                const response = fetch(EDIT_OUT_URL + this.spesaId, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

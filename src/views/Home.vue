@@ -58,29 +58,29 @@
                 <v-card elevation="0" v-for="item in creditors.creditors" :key="item.creditor">
                     <v-card-title>
                         <p class="text-h5 text-right">
-                            {{ getUserName(item.creditor) }}
+                            {{ getUserName(item.creditor) }}: {{ item.totalValue }}€
                         </p>
                     </v-card-title>
                     <v-card-text v-for="i in item.value" :key="i.group">
                         <p class="text-body-1 text-right">
-                            dal gruppo {{ getGroupName(i.group) }} $ {{ i.money}} 
+                            dal gruppo {{ getGroupName(i.group) }}: {{ i.money}}€
                         </p>
                     </v-card-text>
                 </v-card>
             </v-col>
             <v-col cols="4" class="text-center">
-                <!-- colonna totale vuota -->
+                
             </v-col>
             <v-col  cols="4">
                 <v-card elevation="0" v-for="item in debtors.debtors" :key="item.debtor">
                     <v-card-title>
                         <p class="text-h5 text-left">
-                            {{ getUserName(item.debtors) }}
+                            {{ getUserName(item.debtors) }}: {{ item.totalValue }}€
                         </p>
                     </v-card-title>
                     <v-card-text v-for="i in item.value" :key="i.group">
                         <p class="text-body-1 text-left">
-                            dal gruppo {{ getGroupName(i.group) }} $ {{ i.money}} 
+                            dal gruppo {{ getGroupName(i.group) }}: {{ i.money}}€
                         </p>
                     </v-card-text>
                 </v-card>

@@ -7,7 +7,14 @@
         <v-expansion-panels multiple variant="inset">
             <v-expansion-panel v-for="item in creditors.creditors" :key="item.creditor">
                 <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">
-                    {{ getUserName(item.creditor) }}
+                    <v-row>
+                        <v-col>
+                            {{ getUserName(item.creditor) }}
+                        </v-col>
+                        <v-col class="text-right">
+                            {{ item.totalValue }}€
+                        </v-col>
+                    </v-row>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text v-for="i in item.value" :key="i.group">
                     <v-row>
@@ -15,7 +22,7 @@
                             {{ getGroupName(i.group) }}
                         </v-col>
                         <v-col class="text-right">
-                            $ {{ i.money}}
+                            {{ i.money}}€
                         </v-col>
                     </v-row>
                 </v-expansion-panel-text>
@@ -25,10 +32,24 @@
 
             <v-expansion-panel v-for="item in debtors.debtors" :key="item.debtor">
                 <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">
-                    {{ getUserName(item.debtors) }}
+                    <v-row>
+                        <v-col>
+                            {{ getUserName(item.debtors) }}
+                        </v-col>
+                        <v-col class="text-right">
+                            {{ item.totalValue }}€
+                        </v-col>
+                    </v-row>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text v-for="i in item.value" :key="i.group">
-                    dal gruppo {{ getGroupName(i.group) }} $ {{ i.money}} 
+                    <v-row>
+                        <v-col>
+                            {{ getGroupName(i.group) }}
+                        </v-col>
+                        <v-col class="text-right">
+                            {{ i.money}}€
+                        </v-col>
+                    </v-row>
                 </v-expansion-panel-text>
             </v-expansion-panel>
         </v-expansion-panels>

@@ -1,3 +1,5 @@
+<!-- ! NON FUNZIONA -->
+
 <template>
     <div>
         <canvas id="myChart"></canvas>

@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar flat color="blue">
+  <v-app-bar flat color="blue" style="position:fixed">
     <v-app-bar-title>
       SliceIT
     </v-app-bar-title>

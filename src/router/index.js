@@ -8,6 +8,8 @@ const RegisterPage = import('@/views/Register.vue')
 const HelpPage = import('@/views/Help.vue')
 const HomePage = import('@/views/Home.vue')
 const ProfilePage = import('@/views/Profilo.vue')
+const GroupsPage = import('@/views/Groups.vue')
+const GroupPage = import('@/views/Group.vue')
 const peoplePage = import('@/views/People.vue')
 
 const routes = [
@@ -73,7 +75,18 @@ const routes = [
       {
         path: '',
         name: 'groups',
-        component: () => ProfilePage,
+        component: () => GroupsPage,
+      },
+    ],
+  },
+  {
+path: '/groups/:id',
+    component: () => DefaultUser,
+    children: [
+      {
+        path: '',
+        name: 'group',
+        component: () => GroupPage,
       },
     ],
   },

@@ -10,6 +10,7 @@ const HomePage = import('@/views/Home.vue')
 const ProfilePage = import('@/views/Profilo.vue')
 const GroupsPage = import('@/views/Groups.vue')
 const GroupPage = import('@/views/Group.vue')
+const StatsPage = import('@/views/Stats.vue')
 
 const routes = [
   {
@@ -107,7 +108,7 @@ path: '/groups/:id',
       {
         path: '',
         name: 'stats',
-        component: () => ProfilePage,
+        component: () => StatsPage,
       },
     ],
   },

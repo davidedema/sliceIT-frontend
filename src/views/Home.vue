@@ -1,6 +1,8 @@
 <template>
-    <h1>Sommario</h1>
-    <v-card width="1100" class="mx-auto mt-10">
+    <p class="text-h2 text-left mt-5">
+        Sommario
+    </p>
+    <v-card width="1400" class="mx-auto mt-10">
         <v-row>
             <v-col cols="4">
                 <v-card elevation="0">

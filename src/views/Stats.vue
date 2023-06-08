@@ -1,70 +1,93 @@
-<!-- ! NON FUNZIONA -->
-
 <template>
-    <div>
-        <canvas id="myChart"></canvas>
-    </div>
+    <Pie :options="chartOptions" :data="chartData" />
 </template>
   
 <script>
-import { Pie, mixins } from 'vue-chartjs';
-import { useUserStore } from '@/stores/user-store';
+import { Pie } from 'vue-chartjs'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { useUserStore } from "@/stores/user-store";
 
-const userStore = useUserStore()
+ChartJS.register(ArcElement, Tooltip, Legend)
+
+const userStore = useUserStore();
+//userStore.fetchUser()
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
 const API_URL = HOST + '/api/v1'
-const id = userStore.id
-const GET_OUT_URL = API_URL + '/users/' + id + '/outgoings'
-
+const OUTGOINGS_URL = API_URL + '/users/' + userStore.id + '/outgoings'
 
 export default {
-    extends: Pie,
-    mixins: [mixins.reactiveProp],
-    props: ['options'],
     mounted() {
-        this.fetchData();
+        this.createDataSet();
+    },
+    name: 'BarChart',
+    components: { Pie },
+    data() {
+        return {
+            chartData: null,
+            chartData: {
+                labels: ['Spesa', 'Casa', 'Svago', 'Altro'],
+                datasets: [
+                    {
+                        backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+                        data: [40, 20, 80, 10]
+                    }
+                ]
+            },
+            chartOptions: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        }
     },
     methods: {
-        async fetchData() {
-            const response = await fetch(GET_OUT_URL, {
-                method: 'GET',
+        async createDataSet() {
+            let spesa1 = 0;
+            let casa1 = 0;
+            let svago1 = 0;
+            let altro1 = 0;
+            
+            const response = await fetch(OUTGOINGS_URL, {
+                method: "GET",
                 headers: {
-                    'x-auth-token': userStore.token,
+                    "x-auth-token": userStore.token,
                 },
             });
             if (response.status == 200) {
                 const data = await response.json();
-                const labels = data.map((item) => item.tag);
-                const values = data.map((item) => item.value);
+                data.forEach(function (spesa) {
+                    console.log(spesa)
+                    if (spesa.tag == 'Spesa') {
+                        console.log('spesa')
+                        spesa1 += spesa.value;
+                    }
+                    if (spesa.tag == 'Casa') {
+                        console.log('casa')
+                        casa1 += spesa.value;
+                    }
+                    if (spesa.tag == 'Svago') {
+                        console.log('svago')
+                        svago1 += spesa.value;
+                    }
+                    if (spesa.tag == 'Altro') {
+                        console.log('altro')
+                        altro1 += spesa.value;
+                    }
+                })
                 this.chartData = {
-                    labels,
+                    labels: ['Spesa', 'Casa', 'Svago', 'Altro'],
                     datasets: [
                         {
-                            backgroundColor: this.getRandomColors(data.length),
-                            data: values,
-                        },
-                    ],
-                };
-
-                this.renderChart(this.chartData, this.options);
+                            backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+                            data: [spesa1, casa1, svago1, altro1]
+                        }
+                    ]
+                }
+                console.log(this.chartData)
+            } else {
+                alert('Dati non caricati')
             }
-        },
-        getRandomColors(length) {
-            const colors = [];
-            for (let i = 0; i < length; i++) {
-                const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
-                colors.push(color);
-            }
-            return colors;
-        },
-    },
-};
-</script>
-  
-<style scoped>
-#myChart {
-    max-width: 600px;
-    margin: 0 auto;
+        }
+    }
 }
-</style>
+</script>
   

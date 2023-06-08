@@ -61,7 +61,7 @@
                   </h4>
                 </v-col>
                 <!--DEBITO SPESA-->
-                <v-col cols="2">
+                <v-col cols="1">
                   <div v-if="spesa.paidBy != currentUser">
                     <!--se l'utente non è il pagante-->
                     <h4 style="text-align: left">
@@ -80,6 +80,9 @@
                   </div>
                 </v-col>
                 <!--BOTTONE PER MODIFICARE LA SPESA-->
+                <v-col cols="1">
+                  <ViewSpesa :spesaId="spesa._id"></ViewSpesa>
+                </v-col>
                 <v-col cols="1">
                   <EditOutgoing :spesaId="spesa._id"></EditOutgoing>
                 </v-col>
@@ -114,6 +117,7 @@
 import { useUserStore } from "@/stores/user-store";
 import NewOut from "@/components/NewOut.vue";
 import EditOutgoing from "@/components/EditOutgoing.vue";
+import ViewSpesa from "@/components/ViewSpesa.vue";
 const userStore = useUserStore();
 //userStore.fetchUser()
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
@@ -129,6 +133,7 @@ export default {
   components: {
     NewOut,
     EditOutgoing,
+    ViewSpesa,
   },
   name: "getGroups",
   data() {

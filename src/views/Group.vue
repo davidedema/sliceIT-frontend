@@ -125,7 +125,7 @@ export default {
     this.getGroup();
     this.getGroupOutgoings();
     this.getGroupUsers();
-    //this.getGroupBalance()
+    this.getGroupBalance()
   },
   components: {
     NewOut,
@@ -293,7 +293,7 @@ export default {
         console.error("error:", error);
       }
     },
-    async getGroupBalace() {
+    async getGroupBalance() {
       try {
         const response = await fetch(
           GROUPS_URL 

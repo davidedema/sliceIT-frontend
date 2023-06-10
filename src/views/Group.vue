@@ -13,6 +13,10 @@
         </h1>
       </v-col>
     </v-row>
+    <!--MODIFICA GRUPPO-->
+    <div style="float: right;  position: fixed;  height: auto; width: auto; top:100px; right: 40px;">
+      <v-icon color="info" icon="`mdiSvg:${mdiPencil}`" size="x-large"> </v-icon>
+    </div>
   </header>
 
   <main>
@@ -73,7 +77,7 @@
                   <div v-else>
                     <!--se l'utente è il pagante-->
                     <h4 style="text-align: left">
-                      Devi ricevere:
+                      Ti devono:
                       <br />
                       {{ getCredits(spesa) }}€
                     </h4>

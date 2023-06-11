@@ -13,17 +13,9 @@
         </p>
       </v-col>
       <!--MODIFICA GRUPPO-->
-        <div style="float: right;  position: fixed;  height: auto; width: auto; top:100px; right: 60px;">
-          <v-btn
-            color="primary"
-            fab
-            dark
-            small
-            @click="editGroup(group._id)"
-          >
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-        </div>
+      <div style="float: right;  position: fixed;  height: auto; width: auto; top:100px; right: 60px;">
+        <EditGroup />
+      </div>
     </v-row>
   </header>
 
@@ -130,6 +122,7 @@ import { useUserStore } from "@/stores/user-store";
 import NewOut from "@/components/NewOut.vue";
 import EditOutgoing from "@/components/EditOutgoing.vue";
 import ViewSpesa from "@/components/ViewSpesa.vue";
+import EditGroup from "@/components/EditGroup.vue";
 const userStore = useUserStore();
 //userStore.fetchUser()
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
@@ -146,6 +139,7 @@ export default {
     NewOut,
     EditOutgoing,
     ViewSpesa,
+    EditGroup,
   },
   name: "getGroups",
   data() {

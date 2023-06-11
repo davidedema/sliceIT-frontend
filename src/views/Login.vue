@@ -54,14 +54,14 @@ export default {
           })
         })
 
-        if (response.ok) {
+        if (response.status === 200) {
           const data = await response.json()
           userStore.setUserDetails(data)
           this.$router.push('/home')
         } else {
           // Handle error response from the server
           const errorData = await response.json()
-          console.error('Login failed:', errorData.message)
+          alert('Login failed: ' +  errorData.message)
         }
       } catch (error) {
         console.error('An error occurred during login:', error)

@@ -265,14 +265,14 @@ export default {
             "x-auth-token": userStore.token,
           },
         });
-        if (response.ok) {
+        if (response.status === 200) {
           const data = await response.json();
           this.outgoing = data;
         }
         else {
           // Handle error response from the server
           const errorData = await response.json();
-          console.error("response failed:", errorData.message);
+          alert("response failed: " + errorData.message);
         }
       }
       catch (error) {
@@ -289,14 +289,14 @@ export default {
             "x-auth-token": userStore.token,
           },
         });
-        if (response.ok) {
+        if (response.status === 200) {
           const data = await response.json();
           this.members = data;
         }
         else {
           // Handle error response from the serv
           const errorData = await response.json();
-          console.error("response failed:", errorData.message);
+          alert("response failed: " + errorData.message);
         }
       }
       catch (error) {

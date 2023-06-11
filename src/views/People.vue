@@ -122,12 +122,12 @@
                             "x-auth-token": userStore.token,
                         }
                     });
-                    if (response.ok) {
+                    if (response.status === 200) {
                         const data = await response.json()
                         return data.nickname 
                     } else {
                         const errorData = await response.json();
-                        console.error("response failed:", errorData.message);
+                        alert("response failed: " + errorData.message);
                     }
                 } catch (error) {
                     console.error("error: ", error);
@@ -141,12 +141,12 @@
                             "x-auth-token": userStore.token,
                         }
                     });
-                    if (response.ok) {
+                    if (response.status === 200) {
                         const data = await response.json()
                         return data.name 
                     } else {
                         const errorData = await response.json();
-                        console.error("response failed:", errorData.message);
+                        alert("response failed: " + errorData.message);
                     }
                 } catch (error) {
                     console.error("error: ", error);
@@ -160,7 +160,7 @@
                             "x-auth-token": userStore.token,
                         }
                     });
-                    if (response.ok) {
+                    if (response.status === 200) {
                         const data = await response.json()
                         this.debtors = data.debtors
                         this.creditors = data.creditors
@@ -203,7 +203,7 @@
                         }
                     } else {
                         const errorData = await response.json();
-                        console.error("response failed:", errorData.message);
+                        alert("response failed: " + errorData.message);
                     }
                 } catch (error) {
                     console.error("error: ", error);

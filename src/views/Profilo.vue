@@ -196,6 +196,9 @@ export default {
                 if (response.status === 200) {
                     this.dialogConfirm = false,
                     this.auth = 200
+                }else{
+                    const error = await response.json()
+                    alert("response failed: " + error.message);
                 }
             } catch {
                 console.log("Errore:" + error)
@@ -219,6 +222,9 @@ export default {
                     if (response.status === 200) {
                         this.dialog = false
                         userStore.fetchUser()
+                    }else{
+                        const error = await response.json()
+                        alert("response failed: " + error.message);
                     }
                 } catch (error) {
                     console.log("Errore:" + error)

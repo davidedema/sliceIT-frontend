@@ -196,14 +196,14 @@ export default {
           },
         });
 
-        if (response.ok) {
+        if (response.status === 200) {
           const data = await response.json();
           this.groups = data;
           console.log(data);
         } else {
           // Handle error response from the server
           const errorData = await response.json();
-          console.error("response failed:", errorData.message);
+          alert("response failed: " + errorData.message);
         }
       } catch (error) {
         console.error("error:", error);

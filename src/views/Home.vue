@@ -12,8 +12,8 @@
                         </p>
                     </v-card-title>
                     <v-card-text>
-                        <p class="text-h2 text-center text-success">
-                            $ +{{this.creditors.total}}
+                        <p class="text-h2 text-center text-error">
+                            $ -{{this.debtors.total}}
                         </p>
                     </v-card-text>
                 </v-card>
@@ -35,7 +35,7 @@
                     </v-card-text>
                 </v-card>
             </v-col>
-            <v-col  cols="4">
+            <v-col cols="4">
                 <v-card elevation="0">
                     <v-card-title>
                         <p class="text-h5 text-center">
@@ -43,8 +43,8 @@
                         </p>
                     </v-card-title>
                     <v-card-text>
-                        <p class="text-h2 text-center text-error">
-                            $ -{{this.debtors.total}}
+                        <p class="text-h2 text-center text-success">
+                            $ +{{this.creditors.total}}
                         </p>
                     </v-card-text>
                 </v-card>
@@ -54,11 +54,12 @@
         <v-divider :thickness="20" class="border-opacity-2"></v-divider>
 
         <v-row>
-            <v-col cols="4">
-                <v-card elevation="0" v-for="item in creditors.creditors" :key="item.creditor">
+
+            <v-col  cols="4">
+                <v-card elevation="0" v-for="item in debtors.debtors" :key="item.debtor">
                     <v-card-title>
                         <p class="text-h5 text-right">
-                            {{ getUserName(item.creditor) }}: {{ item.totalValue }}€
+                            {{ getUserName(item.debtors) }}: {{ item.totalValue }}€
                         </p>
                     </v-card-title>
                     <v-card-text v-for="i in item.value" :key="i.group">
@@ -69,13 +70,12 @@
                 </v-card>
             </v-col>
             <v-col cols="4" class="text-center">
-                
             </v-col>
-            <v-col  cols="4">
-                <v-card elevation="0" v-for="item in debtors.debtors" :key="item.debtor">
+            <v-col cols="4">
+                <v-card elevation="0" v-for="item in creditors.creditors" :key="item.creditor">
                     <v-card-title>
                         <p class="text-h5 text-left">
-                            {{ getUserName(item.debtors) }}: {{ item.totalValue }}€
+                            {{ getUserName(item.creditor) }}: {{ item.totalValue }}€
                         </p>
                     </v-card-title>
                     <v-card-text v-for="i in item.value" :key="i.group">

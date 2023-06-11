@@ -176,7 +176,12 @@ export default {
             groupPicture: "nonserve.jpeg",
           }),
         });
-        if (response.status === 201) this.dialog = false;
+        if (response.status === 201) 
+          this.dialog = false;
+        else{
+          const errorData = await response.json();
+          alert("response failed: " + errorData.message);
+        }
       } catch (error) {
         console.log(error);
       }

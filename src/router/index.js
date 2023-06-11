@@ -11,6 +11,7 @@ const ProfilePage = import('@/views/Profilo.vue')
 const GroupsPage = import('@/views/Groups.vue')
 const GroupPage = import('@/views/Group.vue')
 const StatsPage = import('@/views/Stats.vue')
+const peoplePage = import('@/views/People.vue')
 
 const routes = [
   {
@@ -97,7 +98,7 @@ path: '/groups/:id',
       {
         path: '',
         name: 'people',
-        component: () => ProfilePage,
+        component: () => peoplePage,
       },
     ],
   },

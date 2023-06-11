@@ -1,91 +1,60 @@
 <template>
     <p class="text-h2 text-left mt-5">
-        Sommario
+        Persone
     </p>
-    <v-card width="1400" class="mx-auto mt-10">
-        <v-row>
-            <v-col cols="4">
-                <v-card elevation="0">
-                    <v-card-title>
-                        <p class="text-h5 text-center">
-                            Crediti
-                        </p>
-                    </v-card-title>
-                    <v-card-text>
-                        <p class="text-h2 text-center text-success">
-                            $ +{{this.creditors.total}}
-                        </p>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <v-col cols="4">
-                <v-card elevation="0">
-                    <v-card-title>
-                        <p class="text-h5 text-center">
-                            Bilancio totale
-                        </p>
-                    </v-card-title>
-                    <v-card-text>
-                        <p v-bind:class="{
-                            'text-h2 text-center text-success': (this.creditors.total - this.debtors.total) > 0,
-                            'text-h2 text-center text-error': (this.creditors.total - this.debtors.total) < 0
-                        }">
-                            $ {{ this.creditors.total - this.debtors.total }}
-                        </p>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <v-col  cols="4">
-                <v-card elevation="0">
-                    <v-card-title>
-                        <p class="text-h5 text-center">
-                            Debiti
-                        </p>
-                    </v-card-title>
-                    <v-card-text>
-                        <p class="text-h2 text-center text-error">
-                            $ -{{this.debtors.total}}
-                        </p>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-        </v-row>
+    
+    <v-card width="1000" class="mx-auto mt-10" elevation="0">
+        <v-expansion-panels multiple variant="inset">
+            <v-expansion-panel v-for="item in creditors.creditors" :key="item.creditor">
+                <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">
+                    <v-row>
+                        <v-col>
+                            {{ getUserName(item.creditor) }}
+                        </v-col>
+                        <v-col class="text-right">
+                            {{ item.totalValue }}€
+                        </v-col>
+                    </v-row>
+                </v-expansion-panel-title>
+                <v-expansion-panel-text v-for="i in item.value" :key="i.group">
+                    <v-row>
+                        <v-col>
+                            {{ getGroupName(i.group) }}
+                        </v-col>
+                        <v-col class="text-right">
+                            {{ i.money}}€
+                        </v-col>
+                    </v-row>
+                </v-expansion-panel-text>
+            </v-expansion-panel>
 
-        <v-divider :thickness="20" class="border-opacity-2"></v-divider>
+            <v-divider :thickness="20" class="border-opacity-0"></v-divider>
 
-        <v-row>
-            <v-col cols="4">
-                <v-card elevation="0" v-for="item in creditors.creditors" :key="item.creditor">
-                    <v-card-title>
-                        <p class="text-h5 text-right">
-                            {{ getUserName(item.creditor) }}: {{ item.totalValue }}€
-                        </p>
-                    </v-card-title>
-                    <v-card-text v-for="i in item.value" :key="i.group">
-                        <p class="text-body-1 text-right">
-                            dal gruppo {{ getGroupName(i.group) }}: {{ i.money}}€
-                        </p>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <v-col cols="4" class="text-center">
-                
-            </v-col>
-            <v-col  cols="4">
-                <v-card elevation="0" v-for="item in debtors.debtors" :key="item.debtor">
-                    <v-card-title>
-                        <p class="text-h5 text-left">
-                            {{ getUserName(item.debtors) }}: {{ item.totalValue }}€
-                        </p>
-                    </v-card-title>
-                    <v-card-text v-for="i in item.value" :key="i.group">
-                        <p class="text-body-1 text-left">
-                            dal gruppo {{ getGroupName(i.group) }}: {{ i.money}}€
-                        </p>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-        </v-row>
+            <v-expansion-panel v-for="item in debtors.debtors" :key="item.debtor">
+                <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">
+                    <v-row>
+                        <v-col>
+                            {{ getUserName(item.debtors) }}
+                        </v-col>
+                        <v-col class="text-right">
+                            {{ item.totalValue }}€
+                        </v-col>
+                    </v-row>
+                </v-expansion-panel-title>
+                <v-expansion-panel-text v-for="i in item.value" :key="i.group">
+                    <v-row>
+                        <v-col>
+                            {{ getGroupName(i.group) }}
+                        </v-col>
+                        <v-col class="text-right">
+                            {{ i.money}}€
+                        </v-col>
+                    </v-row>
+                </v-expansion-panel-text>
+            </v-expansion-panel>
+        </v-expansion-panels>
+        
+
     </v-card>
 </template>
 
@@ -102,9 +71,9 @@
     const USER_URL = API_URL + '/users'
 
     export default {
-        name: 'Report',
+        name: 'People',
         mounted () {
-            this.getReport()
+            this.getCreditorsDebtors()
         },
         data () {
             return {
@@ -121,6 +90,15 @@
             }
         },
         methods: {
+            orderDescending () {
+                
+            },
+            orderAscending () {
+
+            },
+            orderAlphabetical () {
+
+            },
             getUserName (userId) {
                 for (let i = 0; i < this.userNames.id.length; i++) {
                     if (this.userNames.id[i] == userId) {
@@ -174,7 +152,7 @@
                     console.error("error: ", error);
                 }
             },
-            async getReport () {
+            async getCreditorsDebtors () {
                 try {
                     const response = await fetch(HOME_URL, {
                         method: 'GET',

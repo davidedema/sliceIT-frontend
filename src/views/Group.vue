@@ -8,9 +8,9 @@
         </v-avatar>
       </v-col>
       <v-col cols="auto" sm="2" md="auto">
-        <h1 style="margin-left: 10px">
+        <p class="text-h2 text-left mt-5">
           {{ group.name }}
-        </h1>
+        </p>
       </v-col>
     </v-row>
   </header>

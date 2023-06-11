@@ -140,7 +140,6 @@ const CREATE_URL = API_URL + "/groups";
 export default {
   mounted() {
     this.getGroups();
-    //this.getGroup();
   },
 
   name: "getGroups",

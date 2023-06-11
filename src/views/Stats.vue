@@ -10,7 +10,6 @@ import { useUserStore } from "@/stores/user-store";
 ChartJS.register(ArcElement, Tooltip, Legend)
 
 const userStore = useUserStore();
-//userStore.fetchUser()
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
 const API_URL = HOST + '/api/v1'
 const OUTGOINGS_URL = API_URL + '/users/' + userStore.id + '/outgoings'

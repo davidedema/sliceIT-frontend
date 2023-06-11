@@ -9,20 +9,28 @@
                 <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">
                     <v-row>
                         <v-col>
-                            {{ getUserName(item.creditor) }}
+                            <p class="text-h5 text-left">
+                                {{ getUserName(item.creditor) }}
+                            </p>
                         </v-col>
                         <v-col class="text-right">
-                            {{ item.totalValue }}€
+                            <p class="text-h5 text-right">
+                                {{ item.totalValue }}€
+                            </p>
                         </v-col>
                     </v-row>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text v-for="i in item.value" :key="i.group">
                     <v-row>
                         <v-col>
-                            {{ getGroupName(i.group) }}
+                            <p class="text-body-1 text-left">
+                                {{ getGroupName(i.group) }}
+                            </p>
                         </v-col>
                         <v-col class="text-right">
-                            {{ i.money}}€
+                            <p class="text-body-1 text-right">
+                                {{ i.money}}€
+                            </p>
                         </v-col>
                     </v-row>
                 </v-expansion-panel-text>
@@ -34,20 +42,28 @@
                 <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">
                     <v-row>
                         <v-col>
-                            {{ getUserName(item.debtors) }}
+                            <p class="text-h5 text-left">
+                                {{ getUserName(item.debtors) }}
+                            </p>
                         </v-col>
                         <v-col class="text-right">
-                            {{ item.totalValue }}€
+                            <p class="text-h5 text-right">
+                                {{ item.totalValue }}€
+                            </p>
                         </v-col>
                     </v-row>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text v-for="i in item.value" :key="i.group">
                     <v-row>
                         <v-col>
-                            {{ getGroupName(i.group) }}
+                            <p class="text-body-1 text-left">
+                                {{ getGroupName(i.group) }}
+                            </p>
                         </v-col>
                         <v-col class="text-right">
-                            {{ i.money}}€
+                            <p class="text-body-1 text-right">
+                                {{ i.money}}€
+                            </p>
                         </v-col>
                     </v-row>
                 </v-expansion-panel-text>

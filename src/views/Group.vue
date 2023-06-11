@@ -7,11 +7,23 @@
           </v-img>
         </v-avatar>
       </v-col>
-      <v-col cols="auto" sm="2" md="auto">
+      <v-col cols="10" sm="2" md="auto">
         <p class="text-h2 text-left mt-5">
           {{ group.name }}
         </p>
       </v-col>
+      <!--MODIFICA GRUPPO-->
+        <div style="float: right;  position: fixed;  height: auto; width: auto; top:100px; right: 60px;">
+          <v-btn
+            color="primary"
+            fab
+            dark
+            small
+            @click="editGroup(group._id)"
+          >
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+        </div>
     </v-row>
   </header>
 

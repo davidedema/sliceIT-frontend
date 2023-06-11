@@ -62,7 +62,7 @@
 
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
 const API_URL = HOST + '/api/v1'
-const REGISTER_URL = API_URL + '/auth/login'
+const REGISTER_URL = API_URL + '/auth/register'
 
 export default {
   name: 'RegisterView',

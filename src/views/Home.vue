@@ -124,7 +124,6 @@
             getUserName (userId) {
                 for (let i = 0; i < this.userNames.id.length; i++) {
                     if (this.userNames.id[i] == userId) {
-                        //console.log(this.userNames.name[i])
                         return this.userNames.name[i]
                     }
                 }
@@ -201,7 +200,6 @@
                             this.userNames.id.push(this.creditors.creditors[i].creditor)
                             let nameuser = await this.fetchUserName(this.creditors.creditors[i].creditor)
                             this.userNames.name.push(nameuser)
-                            console.log(this.userNames.id + " - " + this.userNames.name)
                         }
                         // get all the groupnames of the debtors
                         for (let i = 0; i < this.debtors.debtors.length; i++) {

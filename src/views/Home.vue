@@ -27,7 +27,7 @@
                     </v-card-title>
                     <v-card-text>
                         <p v-bind:class="{
-                            'text-h2 text-center text-success': (this.creditors.total - this.debtors.total) > 0,
+                            'text-h2 text-center text-success': (this.creditors.total - this.debtors.total) >= 0,
                             'text-h2 text-center text-error': (this.creditors.total - this.debtors.total) < 0
                         }">
                             $ {{ this.creditors.total - this.debtors.total }}

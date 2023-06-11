@@ -12,8 +12,8 @@
                         </p>
                     </v-card-title>
                     <v-card-text>
-                        <p class="text-h2 text-center text-error">
-                            $ -{{this.debtors.total}}
+                        <p class="text-h2 text-center text-success">
+                            $ +{{this.debtors.total}}
                         </p>
                     </v-card-text>
                 </v-card>
@@ -27,10 +27,10 @@
                     </v-card-title>
                     <v-card-text>
                         <p v-bind:class="{
-                            'text-h2 text-center text-success': (this.creditors.total - this.debtors.total) >= 0,
-                            'text-h2 text-center text-error': (this.creditors.total - this.debtors.total) < 0
+                            'text-h2 text-center text-success': (this.debtors.total - this.creditors.total) >= 0,
+                            'text-h2 text-center text-error': (this.debtors.total - this.creditors.total) < 0
                         }">
-                            $ {{ this.creditors.total - this.debtors.total }}
+                            $ {{ this.debtors.total - this.creditors.total }}
                         </p>
                     </v-card-text>
                 </v-card>
@@ -43,8 +43,8 @@
                         </p>
                     </v-card-title>
                     <v-card-text>
-                        <p class="text-h2 text-center text-success">
-                            $ +{{this.creditors.total}}
+                        <p class="text-h2 text-center text-error">
+                            $ -{{this.creditors.total}}
                         </p>
                     </v-card-text>
                 </v-card>
@@ -124,6 +124,7 @@
             getUserName (userId) {
                 for (let i = 0; i < this.userNames.id.length; i++) {
                     if (this.userNames.id[i] == userId) {
+                        //console.log(this.userNames.name[i])
                         return this.userNames.name[i]
                     }
                 }
@@ -143,12 +144,12 @@
                             "x-auth-token": userStore.token,
                         }
                     });
-                    if (response.status === 200) {
+                    if (response.ok) {
                         const data = await response.json()
                         return data.nickname 
                     } else {
                         const errorData = await response.json();
-                        alert("response failed: " + errorData.message);
+                        console.error("response failed:", errorData.message);
                     }
                 } catch (error) {
                     console.error("error: ", error);
@@ -162,12 +163,12 @@
                             "x-auth-token": userStore.token,
                         }
                     });
-                    if (response.status === 200) {
+                    if (response.ok) {
                         const data = await response.json()
                         return data.name 
                     } else {
                         const errorData = await response.json();
-                        alert("response failed: " + errorData.message);
+                        console.error("response failed:", errorData.message);
                     }
                 } catch (error) {
                     console.error("error: ", error);
@@ -181,7 +182,7 @@
                             "x-auth-token": userStore.token,
                         }
                     });
-                    if (response.status === 200) {
+                    if (response.ok) {
                         const data = await response.json()
                         this.debtors = data.debtors
                         this.creditors = data.creditors
@@ -200,6 +201,7 @@
                             this.userNames.id.push(this.creditors.creditors[i].creditor)
                             let nameuser = await this.fetchUserName(this.creditors.creditors[i].creditor)
                             this.userNames.name.push(nameuser)
+                            console.log(this.userNames.id + " - " + this.userNames.name)
                         }
                         // get all the groupnames of the debtors
                         for (let i = 0; i < this.debtors.debtors.length; i++) {
@@ -223,7 +225,7 @@
                         }
                     } else {
                         const errorData = await response.json();
-                        alert("response failed: " + errorData.message);
+                        console.error("response failed:", errorData.message);
                     }
                 } catch (error) {
                     console.error("error: ", error);

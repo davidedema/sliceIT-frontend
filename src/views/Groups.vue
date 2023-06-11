@@ -163,7 +163,6 @@ export default {
     },
     async createGroup() {
       try {
-        console.log("name" + this.name);
         const response = await fetch(CREATE_URL, {
           method: "POST",
           headers: {
@@ -188,7 +187,6 @@ export default {
     },
     async getGroups() {
       try {
-        console.log("id: " + userStore.id);
         const response = await fetch(USERS_URL + "/groups", {
           method: "GET",
           headers: {
@@ -199,7 +197,6 @@ export default {
         if (response.status === 200) {
           const data = await response.json();
           this.groups = data;
-          console.log(data);
         } else {
           // Handle error response from the server
           const errorData = await response.json();

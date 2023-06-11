@@ -229,7 +229,6 @@ export default {
                 })
                 if (response.status == 201) {
                     this.dialog = false
-                    console.log(this.dialog)
                 }
                 else{
                     const error = await response.json()

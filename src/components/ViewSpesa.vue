@@ -146,7 +146,6 @@ export default {
             this.isPeriodic = !this.isPeriodic;
         },
         async fetchOutgoing() {
-            console.log(this.spesaId)
             try {
                 const response = await fetch(GET_GROUP_URL + userStore.currentGroup + '/', {
                     method: 'GET',

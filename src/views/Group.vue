@@ -212,12 +212,8 @@ export default {
     getCredits(spesa) {
       let credits = 0;
       for (let i = 0; i < spesa.users.length; i++) {
-        console.log(spesa.users[i].value);
-        console.log(spesa.paidBy);
-        console.log(userStore.id);
         if (spesa.users[i].user != userStore.id) {
           credits += spesa.users[i].value;
-          console.log(credits);
         }
       }
       return credits;

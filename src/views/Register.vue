@@ -98,7 +98,7 @@ export default {
     async handleRegister() {
       try {
         if (this.password !== this.confirmPassword) {
-          console.error('Le password non coincidono')
+          alert('Le password non coincidono')
           return;
         }
         const response = await fetch(REGISTER_URL, {

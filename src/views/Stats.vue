@@ -55,21 +55,16 @@ export default {
             if (response.status == 200) {
                 const data = await response.json();
                 data.forEach(function (spesa) {
-                    console.log(spesa)
                     if (spesa.tag == 'Spesa') {
-                        console.log('spesa')
                         spesa1 += spesa.value;
                     }
                     if (spesa.tag == 'Casa') {
-                        console.log('casa')
                         casa1 += spesa.value;
                     }
                     if (spesa.tag == 'Svago') {
-                        console.log('svago')
                         svago1 += spesa.value;
                     }
                     if (spesa.tag == 'Altro') {
-                        console.log('altro')
                         altro1 += spesa.value;
                     }
                 })
@@ -82,7 +77,6 @@ export default {
                         }
                     ]
                 }
-                console.log(this.chartData)
             } else {
                 alert('Dati non caricati')
             }

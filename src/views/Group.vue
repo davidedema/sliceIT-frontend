@@ -7,11 +7,15 @@
           </v-img>
         </v-avatar>
       </v-col>
-      <v-col cols="auto" sm="2" md="auto">
-        <h1 style="margin-left: 10px">
+      <v-col cols="10" sm="2" md="auto">
+        <p class="text-h2 text-left mt-5">
           {{ group.name }}
-        </h1>
+        </p>
       </v-col>
+      <!--MODIFICA GRUPPO-->
+      <div style="float: right;  position: fixed;  height: auto; width: auto; top:100px; right: 60px;">
+        <EditGroup />
+      </div>
     </v-row>
   </header>
 
@@ -118,6 +122,7 @@ import { useUserStore } from "@/stores/user-store";
 import NewOut from "@/components/NewOut.vue";
 import EditOutgoing from "@/components/EditOutgoing.vue";
 import ViewSpesa from "@/components/ViewSpesa.vue";
+import EditGroup from "@/components/EditGroup.vue";
 const userStore = useUserStore();
 //userStore.fetchUser()
 const HOST = import.meta.env.VITE_APP_API_HOST || 'http://localhost:3001'
@@ -134,6 +139,7 @@ export default {
     NewOut,
     EditOutgoing,
     ViewSpesa,
+    EditGroup,
   },
   name: "getGroups",
   data() {
@@ -206,12 +212,8 @@ export default {
     getCredits(spesa) {
       let credits = 0;
       for (let i = 0; i < spesa.users.length; i++) {
-        console.log(spesa.users[i].value);
-        console.log(spesa.paidBy);
-        console.log(userStore.id);
         if (spesa.users[i].user != userStore.id) {
           credits += spesa.users[i].value;
-          console.log(credits);
         }
       }
       return credits;
@@ -259,14 +261,14 @@ export default {
             "x-auth-token": userStore.token,
           },
         });
-        if (response.ok) {
+        if (response.status === 200) {
           const data = await response.json();
           this.outgoing = data;
         }
         else {
           // Handle error response from the server
           const errorData = await response.json();
-          console.error("response failed:", errorData.message);
+          alert("response failed: " + errorData.message);
         }
       }
       catch (error) {
@@ -283,14 +285,14 @@ export default {
             "x-auth-token": userStore.token,
           },
         });
-        if (response.ok) {
+        if (response.status === 200) {
           const data = await response.json();
           this.members = data;
         }
         else {
           // Handle error response from the serv
           const errorData = await response.json();
-          console.error("response failed:", errorData.message);
+          alert("response failed: " + errorData.message);
         }
       }
       catch (error) {

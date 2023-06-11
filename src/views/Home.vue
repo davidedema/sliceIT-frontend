@@ -124,7 +124,6 @@
             getUserName (userId) {
                 for (let i = 0; i < this.userNames.id.length; i++) {
                     if (this.userNames.id[i] == userId) {
-                        //console.log(this.userNames.name[i])
                         return this.userNames.name[i]
                     }
                 }
@@ -144,12 +143,12 @@
                             "x-auth-token": userStore.token,
                         }
                     });
-                    if (response.ok) {
+                    if (response.status === 200) {
                         const data = await response.json()
                         return data.nickname 
                     } else {
                         const errorData = await response.json();
-                        console.error("response failed:", errorData.message);
+                        alert("response failed: " + errorData.message);
                     }
                 } catch (error) {
                     console.error("error: ", error);
@@ -163,12 +162,12 @@
                             "x-auth-token": userStore.token,
                         }
                     });
-                    if (response.ok) {
+                    if (response.status === 200) {
                         const data = await response.json()
                         return data.name 
                     } else {
                         const errorData = await response.json();
-                        console.error("response failed:", errorData.message);
+                        alert("response failed: " + errorData.message);
                     }
                 } catch (error) {
                     console.error("error: ", error);
@@ -182,7 +181,7 @@
                             "x-auth-token": userStore.token,
                         }
                     });
-                    if (response.ok) {
+                    if (response.status === 200) {
                         const data = await response.json()
                         this.debtors = data.debtors
                         this.creditors = data.creditors
@@ -201,7 +200,6 @@
                             this.userNames.id.push(this.creditors.creditors[i].creditor)
                             let nameuser = await this.fetchUserName(this.creditors.creditors[i].creditor)
                             this.userNames.name.push(nameuser)
-                            console.log(this.userNames.id + " - " + this.userNames.name)
                         }
                         // get all the groupnames of the debtors
                         for (let i = 0; i < this.debtors.debtors.length; i++) {
@@ -225,7 +223,7 @@
                         }
                     } else {
                         const errorData = await response.json();
-                        console.error("response failed:", errorData.message);
+                        alert("response failed: " + errorData.message);
                     }
                 } catch (error) {
                     console.error("error: ", error);

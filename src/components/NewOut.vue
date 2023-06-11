@@ -145,7 +145,7 @@ export default {
                         'x-auth-token': userStore.token,
                     }
                 })
-                if (response.ok) {
+                if (response.status === 200) {
                     const data = await response.json()
                     this.partecipanti = data.members.map(member => {
                         return {
@@ -166,12 +166,15 @@ export default {
                             this.partecipanti[i].nickname = data.nickname
                         }
                     }
+                } else{
+                    const error = await response.json()
+                    alert("response failed: " + error.message);
                 }
             } catch (error) {
                 console.log(error)
             }
         },
-        submitForm() {
+        async submitForm() {
             // trasformo i nickname in id
             if (this.selected.length > 0) {
                 for (let i = 0; i < this.selected.length; i++) {
@@ -216,7 +219,7 @@ export default {
                 tag: this.tag,
             }
             try {
-                const response = fetch(NEW_OUT_URL, {
+                const response = await fetch(NEW_OUT_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -226,7 +229,10 @@ export default {
                 })
                 if (response.status == 201) {
                     this.dialog = false
-                    console.log(this.dialog)
+                }
+                else{
+                    const error = await response.json()
+                    alert("response failed: " + error.message);
                 }
             } catch (error) {
                 console.log(error)

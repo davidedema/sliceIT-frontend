@@ -146,7 +146,6 @@ export default {
             this.isPeriodic = !this.isPeriodic;
         },
         async fetchOutgoing() {
-            console.log(this.spesaId)
             try {
                 const response = await fetch(GET_GROUP_URL + userStore.currentGroup + '/', {
                     method: 'GET',
@@ -154,7 +153,7 @@ export default {
                         'x-auth-token': userStore.token,
                     }
                 })
-                if (response.ok) {
+                if (response.status === 200) {
                     const data = await response.json()
                     this.partecipanti = data.members.map(member => {
                         return {
@@ -175,6 +174,9 @@ export default {
                             this.partecipanti[i].nickname = data.nickname
                         }
                     }
+                } else{
+                    const error = await response.json()
+                    alert("response failed: " + error.message);
                 }
             } catch (error) {
                 console.log(error)
@@ -214,12 +216,15 @@ export default {
                     }
                     this.isPeriodic = data.periodicity.isPeriodic
                     this.periodo = data.periodicity.days
+                } else{
+                    const error = await response.json()
+                    alert("response failed: " + error.message);
                 }
             } catch (error) {
 
             }
         },
-        submitForm() {
+        async submitForm() {
             // trasformo i nickname in id
             if (this.selected.length > 0) {
                 for (let i = 0; i < this.selected.length; i++) {
@@ -274,6 +279,10 @@ export default {
                 })
                 if (response.status == 201) {
                     this.dialog = false
+                }
+                else{
+                    const error = await response.json()
+                    alert("response failed: " + error.message);
                 }
             } catch (error) {
                 console.log(error)

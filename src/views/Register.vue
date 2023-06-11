@@ -98,7 +98,7 @@ export default {
     async handleRegister() {
       try {
         if (this.password !== this.confirmPassword) {
-          console.error('Le password non coincidono')
+          alert('Le password non coincidono')
           return;
         }
         const response = await fetch(REGISTER_URL, {
@@ -115,11 +115,11 @@ export default {
           })
         })
 
-        if (response.ok) {
+        if (response.status === 201) {
           this.$router.push('/login')
         } else {
           const errorData = await response.json()
-          console.error('Registration failed:', errorData.message)
+          alert('Registration failed: ' + errorData.message)
         }
       } catch (error) {
         console.error('An error occurred during registration:', error)

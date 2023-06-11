@@ -41,3 +41,5 @@ Il servizio è anche raggiungibile all'indirizzo https://www.sliceit.onrender.co
 
 ## Note
 Come detto all'inizio questo progetto contiene solo il frontend, per avere l'esperienza completa bisognerà installare anche https://github.com/davidedema/sliceIT-backend. Seguire il README per l'installazione
+
+Ricordimao che il progetto non è stato sviluppato nella sua interezza. Per esempio manca la feature di pagare la spesa che era riservata a uno sprint successivo.

@@ -281,7 +281,7 @@ export default {
                     },
                     body: JSON.stringify(data),
                 })
-                if (response.status == 201) {
+                if (response.status == 200) {
                     this.dialog = false
                 }else{
                     const error = await response.json()

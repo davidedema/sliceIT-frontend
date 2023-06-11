@@ -1,5 +1,5 @@
 <template>
-    Domande e risposte
+    Work in progres ...
 </template>
   
 <script setup>

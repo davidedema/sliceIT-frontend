@@ -17,7 +17,7 @@
     <template v-slot:append>
       <div class="pa-2">
         <v-btn block @click="goto('/login')"> Logout </v-btn>
-        <v-btn block> Help </v-btn>
+        <v-btn block @click="goto('/help')"> Help </v-btn>
       </div>
     </template>
       
